@@ -12,7 +12,7 @@ export default async function LoginPage() {
   }
 
   return (
-    <main className="min-h-screen w-full flex items-center justify-center p-4 bg-gradient-to-br from-slate-50 via-purple-50/30 to-indigo-50/40 dark:from-slate-950 dark:via-purple-950/20 dark:to-slate-900">
+    <main className="min-h-screen w-full flex items-center justify-center p-4 bg-[#181818]">
       <Suspense fallback={<Spinner size="lg" />}>
         <LoginCard />
       </Suspense>

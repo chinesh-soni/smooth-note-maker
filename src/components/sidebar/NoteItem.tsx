@@ -82,13 +82,13 @@ export const NoteItem: React.FC<NoteItemProps> = ({
       className={clsx(
         'group relative flex items-start justify-between p-3 rounded-xl cursor-pointer transition-all border text-left select-none',
         isActive
-          ? 'bg-purple-50/90 dark:bg-purple-950/40 border-purple-500/80 shadow-sm'
-          : 'bg-white/80 dark:bg-slate-900/60 border-slate-200/80 dark:border-slate-800/80 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-700'
+          ? 'bg-[#2d2d2d] border-cyan-500/80 shadow-sm'
+          : 'bg-[#252525]/80 border-[#333333] hover:bg-[#2a2a2a] hover:border-[#404040]'
       )}
     >
       {/* Active Indicator Bar (OneNote style left edge) */}
       {isActive && (
-        <div className="absolute left-0 top-2 bottom-2 w-1 bg-purple-600 rounded-r-full" />
+        <div className="absolute left-0 top-2 bottom-2 w-1 bg-cyan-500 rounded-r-full shadow-sm" />
       )}
 
       <div className="flex-1 min-w-0 pr-2">
@@ -99,14 +99,14 @@ export const NoteItem: React.FC<NoteItemProps> = ({
               type="text"
               value={titleInput}
               onChange={(e) => setTitleInput(e.target.value)}
-              className="w-full text-xs font-semibold px-2 py-1 bg-white dark:bg-slate-800 border border-purple-500 rounded focus:outline-none"
+              className="w-full text-xs font-semibold px-2 py-1 bg-[#1e1e1e] border border-cyan-500 rounded text-white focus:outline-none"
               onKeyDown={(e) => {
                 if (e.key === 'Escape') handleCancelRename();
               }}
             />
             <button
               type="submit"
-              className="p-1 text-emerald-600 hover:bg-emerald-50 rounded"
+              className="p-1 text-emerald-500 hover:bg-[#2d2d2d] rounded"
               title="Save"
             >
               <Check className="w-3.5 h-3.5" />
@@ -114,7 +114,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
             <button
               type="button"
               onClick={handleCancelRename}
-              className="p-1 text-slate-400 hover:bg-slate-100 rounded"
+              className="p-1 text-slate-400 hover:bg-[#2d2d2d] rounded"
               title="Cancel"
             >
               <X className="w-3.5 h-3.5" />
@@ -127,18 +127,18 @@ export const NoteItem: React.FC<NoteItemProps> = ({
                 className={clsx(
                   'text-xs font-semibold truncate',
                   isActive
-                    ? 'text-purple-950 dark:text-purple-100 font-bold'
-                    : 'text-slate-800 dark:text-slate-200'
+                    ? 'text-white font-bold'
+                    : 'text-slate-300 group-hover:text-white'
                 )}
               >
                 {note.title || 'Untitled Note'}
               </h4>
             </div>
 
-            <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-400 dark:text-slate-500">
+            <div className="flex items-center gap-2 mt-1 text-[11px] text-slate-400">
               <span>{formatRelativeTime(note.updatedAt)}</span>
               {note.driveFileId && (
-                <span className="flex items-center gap-0.5 text-purple-600 dark:text-purple-400 font-normal">
+                <span className="flex items-center gap-0.5 text-cyan-400 font-normal">
                   <Cloud className="w-3 h-3" />
                   <span>Drive</span>
                 </span>
@@ -154,7 +154,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className={clsx(
-              'p-1 rounded-md text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 transition-opacity',
+              'p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-[#2d2d2d] transition-opacity',
               isMenuOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 focus:opacity-100'
             )}
             aria-label="Note options"
@@ -163,7 +163,7 @@ export const NoteItem: React.FC<NoteItemProps> = ({
           </button>
 
           {isMenuOpen && (
-            <div className="absolute right-0 top-full mt-1 w-36 bg-white dark:bg-slate-900 rounded-lg shadow-xl border border-slate-200 dark:border-slate-800 py-1 z-40 animate-fade-in text-xs">
+            <div className="absolute right-0 top-full mt-1 w-36 bg-[#252525] rounded-lg shadow-xl border border-[#333333] py-1 z-40 animate-fade-in text-xs">
               <button
                 onClick={() => {
                   setIsMenuOpen(false);

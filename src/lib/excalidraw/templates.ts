@@ -10,36 +10,36 @@ export function createTemplateNote(type: TemplateType, title?: string): Partial<
 
   let elements: any[] = [];
   let appState: Record<string, any> = {
-    viewBackgroundColor: '#121212',
+    viewBackgroundColor: '#1b1b1b',
     theme: 'dark',
     currentItemStrokeColor: '#ffffff',
   };
 
   switch (type) {
     case 'lined':
-      appState.viewBackgroundColor = '#121212';
+      appState.viewBackgroundColor = '#1b1b1b';
       elements = createLinedPaperElements();
       break;
 
     case 'grid':
-      appState.viewBackgroundColor = '#121212';
+      appState.viewBackgroundColor = '#1b1b1b';
       appState.gridSize = null;
       elements = createGridElements();
       break;
 
     case 'meeting':
-      appState.viewBackgroundColor = '#121212';
+      appState.viewBackgroundColor = '#1b1b1b';
       elements = createMeetingNotesElements();
       break;
 
     case 'brainstorm':
-      appState.viewBackgroundColor = '#121212';
+      appState.viewBackgroundColor = '#1b1b1b';
       elements = createBrainstormElements();
       break;
 
     case 'blank':
     default:
-      appState.viewBackgroundColor = '#121212';
+      appState.viewBackgroundColor = '#1b1b1b';
       elements = [];
       break;
   }

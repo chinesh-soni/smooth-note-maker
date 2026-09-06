@@ -22,13 +22,13 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variants = {
     primary:
-      'bg-purple-700 text-white hover:bg-purple-800 focus:ring-purple-600 shadow-sm',
+      'bg-cyan-600 text-white hover:bg-cyan-500 focus:ring-cyan-500 shadow-sm',
     secondary:
-      'bg-purple-100 text-purple-900 hover:bg-purple-200 focus:ring-purple-500',
+      'bg-cyan-950/50 text-cyan-300 hover:bg-cyan-900/50 focus:ring-cyan-500',
     outline:
-      'border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 focus:ring-purple-500',
+      'border border-[#383838] bg-[#252525] hover:bg-[#2d2d2d] text-slate-200 focus:ring-cyan-500',
     ghost:
-      'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:ring-purple-500',
+      'text-slate-300 hover:bg-[#252525] hover:text-white focus:ring-cyan-500',
     danger:
       'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 shadow-sm',
   };

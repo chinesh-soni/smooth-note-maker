@@ -40,7 +40,7 @@ export const UserMenu: React.FC<{ driveFolderId?: string | null }> = ({ driveFol
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
+        className="flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-[#2d2d2d] transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
@@ -49,30 +49,30 @@ export const UserMenu: React.FC<{ driveFolderId?: string | null }> = ({ driveFol
             src={user.image}
             alt={displayName}
             referrerPolicy="no-referrer"
-            className="w-8 h-8 rounded-full border border-slate-300 dark:border-slate-700 object-cover shadow-sm"
+            className="w-8 h-8 rounded-full border border-[#3d3d3d] object-cover shadow-sm"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-700 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
             {initials}
           </div>
         )}
         <div className="hidden sm:block text-left text-xs">
-          <div className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[130px]">
+          <div className="font-semibold text-slate-100 truncate max-w-[130px]">
             {displayName}
           </div>
-          <div className="text-slate-500 dark:text-slate-400 truncate max-w-[130px]">
+          <div className="text-slate-400 truncate max-w-[130px]">
             {user.email}
           </div>
         </div>
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 bottom-full sm:bottom-auto sm:top-full mt-2 w-64 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 py-2 z-50 animate-fade-in">
-          <div className="px-4 py-3 border-b border-slate-100 dark:border-slate-800">
-            <p className="text-sm font-semibold text-slate-800 dark:text-white truncate">
-              {user.name}
+        <div className="absolute right-0 bottom-full sm:bottom-auto sm:top-full mt-2 w-64 bg-[#252525] rounded-xl shadow-2xl border border-[#333333] py-2 z-50 animate-fade-in">
+          <div className="px-4 py-3 border-b border-[#333333]">
+            <p className="text-sm font-semibold text-white truncate">
+              {displayName}
             </p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 truncate mt-0.5">
+            <p className="text-xs text-slate-400 truncate mt-0.5">
               {user.email}
             </p>
           </div>
@@ -82,18 +82,18 @@ export const UserMenu: React.FC<{ driveFolderId?: string | null }> = ({ driveFol
               href={folderLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-3 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors group"
+              className="flex items-center gap-2 px-3 py-2 text-xs text-slate-300 hover:bg-[#2d2d2d] rounded-lg transition-colors group"
             >
-              <HardDrive className="w-4 h-4 text-purple-600 dark:text-purple-400 group-hover:scale-110 transition-transform" />
+              <HardDrive className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
               <div className="flex-1 truncate">
                 <span>Google Drive Folder</span>
-                <p className="text-[10px] text-slate-400">{APP_FOLDER_NAME}</p>
+                <p className="text-[10px] text-slate-500">{APP_FOLDER_NAME}</p>
               </div>
               <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
             </a>
           </div>
 
-          <div className="border-t border-slate-100 dark:border-slate-800 px-2 pt-1.5">
+          <div className="border-t border-[#333333] px-2 pt-1.5">
             <button
               onClick={() => signOut({ callbackUrl: '/login' })}
               className="w-full flex items-center gap-2 px-3 py-2 text-xs text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-lg transition-colors text-left"

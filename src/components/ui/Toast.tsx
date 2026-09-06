@@ -48,7 +48,7 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           >
             {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />}
             {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-rose-600 flex-shrink-0" />}
-            {toast.type === 'info' && <Info className="w-4 h-4 text-purple-400 flex-shrink-0" />}
+            {toast.type === 'info' && <Info className="w-4 h-4 text-cyan-400 flex-shrink-0" />}
             <span>{toast.message}</span>
             <button
               onClick={() => removeToast(toast.id)}

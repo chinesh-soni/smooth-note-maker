@@ -35,8 +35,8 @@ export const SyncBadge: React.FC<SyncBadgeProps> = ({
 
     case 'syncing-drive':
       return (
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-purple-700 bg-purple-50 dark:bg-purple-950/40 dark:text-purple-300 rounded-full border border-purple-200 dark:border-purple-800">
-          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-cyan-300 bg-cyan-950/50 rounded-full border border-cyan-700/60">
+          <RefreshCw className="w-3.5 h-3.5 animate-spin text-cyan-400" />
           <span>Syncing to Google Drive...</span>
         </div>
       );

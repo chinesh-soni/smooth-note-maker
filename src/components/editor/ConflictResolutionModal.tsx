@@ -34,16 +34,16 @@ export const ConflictResolutionModal: React.FC<ConflictResolutionModalProps> = (
         {/* Comparison Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
           {/* Remote Card */}
-          <div className="p-4 rounded-xl border-2 border-purple-200 dark:border-purple-900 bg-purple-50/50 dark:bg-purple-950/20 flex flex-col justify-between">
+          <div className="p-4 rounded-xl border border-cyan-700/60 bg-cyan-950/30 flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold text-purple-800 dark:text-purple-300 mb-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-cyan-400 mb-2">
                 <Cloud className="w-4 h-4" />
                 <span>Google Drive Version</span>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">
-                Modified: <span className="font-semibold">{formatFullDateTime(conflict.remoteModifiedTime)}</span>
+              <p className="text-xs text-slate-400 mb-1">
+                Modified: <span className="font-semibold text-slate-200">{formatFullDateTime(conflict.remoteModifiedTime)}</span>
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 Elements: {conflict.remoteNote?.elements?.length || 0}
               </p>
             </div>
@@ -58,16 +58,16 @@ export const ConflictResolutionModal: React.FC<ConflictResolutionModalProps> = (
           </div>
 
           {/* Local Card */}
-          <div className="p-4 rounded-xl border-2 border-indigo-200 dark:border-indigo-900 bg-indigo-50/50 dark:bg-indigo-950/20 flex flex-col justify-between">
+          <div className="p-4 rounded-xl border border-blue-700/60 bg-blue-950/30 flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-2 text-xs font-bold text-indigo-800 dark:text-indigo-300 mb-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-blue-400 mb-2">
                 <Laptop className="w-4 h-4" />
                 <span>Current Device Version</span>
               </div>
-              <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">
-                Modified: <span className="font-semibold">{formatFullDateTime(conflict.localUpdatedAt)}</span>
+              <p className="text-xs text-slate-400 mb-1">
+                Modified: <span className="font-semibold text-slate-200">{formatFullDateTime(conflict.localUpdatedAt)}</span>
               </p>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400">
                 Elements: {conflict.localNote?.elements?.length || 0}
               </p>
             </div>

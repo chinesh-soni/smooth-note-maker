@@ -123,7 +123,7 @@ export function useNotes() {
           ...local,
           appState: {
             ...local.appState,
-            viewBackgroundColor: '#121212',
+            viewBackgroundColor: '#1b1b1b',
             gridSize: null,
             theme: 'dark',
           },
@@ -142,7 +142,7 @@ export function useNotes() {
             ...data.note,
             appState: {
               ...data.note.appState,
-              viewBackgroundColor: '#121212',
+              viewBackgroundColor: '#1b1b1b',
               gridSize: null,
               theme: 'dark',
             },
@@ -159,7 +159,7 @@ export function useNotes() {
           ...local,
           appState: {
             ...local.appState,
-            viewBackgroundColor: '#121212',
+            viewBackgroundColor: '#1b1b1b',
             gridSize: null,
             theme: 'dark',
           },

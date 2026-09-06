@@ -66,7 +66,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     setTimeout(() => {
       api.updateScene({
         appState: {
-          viewBackgroundColor: '#121212',
+          viewBackgroundColor: '#1b1b1b',
           gridSize: null,
           theme: 'dark',
         },
@@ -84,7 +84,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
         elements: note.elements || [],
         appState: {
           ...note.appState,
-          viewBackgroundColor: '#121212',
+          viewBackgroundColor: '#1b1b1b',
           gridSize: null,
           theme: 'dark',
           collaborators: undefined,
@@ -111,7 +111,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
         ...current,
         elements,
         appState: {
-          viewBackgroundColor: '#121212',
+          viewBackgroundColor: '#1b1b1b',
           gridSize: null,
           theme: 'dark',
           zoom: appState.zoom,
@@ -132,7 +132,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     () => ({
       elements: note.elements || [],
       appState: {
-        viewBackgroundColor: '#121212',
+        viewBackgroundColor: '#1b1b1b',
         gridSize: null,
         theme: 'dark' as const,
         currentItemStrokeColor: '#ffffff',
@@ -147,7 +147,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   );
 
   return (
-    <div className="w-full h-full relative excalidraw-container bg-[#121212]">
+    <div className="w-full h-full relative excalidraw-container bg-[#1b1b1b]">
       <ExcalidrawComponent
         theme="dark"
         excalidrawAPI={handleExcalidrawAPI}

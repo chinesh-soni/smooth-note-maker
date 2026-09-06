@@ -149,14 +149,14 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-slate-100 dark:bg-slate-950">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#1b1b1b]">
       {/* OneNote Left Sidebar */}
       <NoteSidebar
         notes={notes}
         activeNoteId={activeNoteId}
         onSelectNote={(id) => {
           selectNote(id);
-          if (window.innerWidth < 640) {
+          if (typeof window !== 'undefined' && window.innerWidth < 640) {
             setIsSidebarOpen(false);
           }
         }}
@@ -191,9 +191,9 @@ export default function DashboardPage() {
           isSidebarOpen={isSidebarOpen}
         />
 
-        <div className="flex-1 relative overflow-hidden bg-[#121212]">
+        <div className="flex-1 relative overflow-hidden bg-[#1b1b1b]">
           {isLoadingNote ? (
-            <div className="flex flex-col items-center justify-center h-full bg-[#121212]">
+            <div className="flex flex-col items-center justify-center h-full bg-[#1b1b1b]">
               <Spinner size="lg" />
               <p className="mt-3 text-xs text-slate-400 font-medium">Opening blackboard note...</p>
             </div>

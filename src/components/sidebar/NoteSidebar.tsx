@@ -84,23 +84,23 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
       )}
 
       <aside
-        className={`fixed sm:static inset-y-0 left-0 z-50 sm:z-20 h-full flex flex-col bg-slate-950 border-r border-slate-800 text-slate-100 transition-all duration-300 ease-in-out ${
+        className={`fixed sm:static inset-y-0 left-0 z-50 sm:z-20 h-full flex flex-col bg-[#202020] border-r border-[#2d2d2d] text-slate-100 transition-all duration-300 ease-in-out ${
           isOpen
             ? 'w-72 sm:w-80 translate-x-0 opacity-100 shadow-2xl sm:shadow-none'
             : '-translate-x-full sm:translate-x-0 sm:w-0 sm:border-r-0 sm:opacity-0 pointer-events-none overflow-hidden'
         }`}
       >
         {/* Top Header: App Branding */}
-        <div className="flex items-center justify-between p-4 border-b border-slate-800/80 flex-shrink-0">
+        <div className="flex items-center justify-between p-4 border-b border-[#2d2d2d] flex-shrink-0">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white shadow-sm flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-sm flex-shrink-0">
               <BookOpen className="w-4 h-4" />
             </div>
             <div className="truncate">
               <h1 className="text-sm font-bold text-white leading-none truncate">
                 Smooth Note Maker
               </h1>
-              <span className="text-[10px] text-purple-400 font-medium">
+              <span className="text-[10px] text-cyan-400 font-medium">
                 OneNote Edition
               </span>
             </div>
@@ -108,7 +108,7 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
 
           <button
             onClick={onToggleOpen}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors flex-shrink-0"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-[#2d2d2d] transition-colors flex-shrink-0"
             title="Collapse sidebar"
           >
             <PanelLeftClose className="w-4 h-4" />
@@ -116,19 +116,19 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
         </div>
 
       {/* Action Bar: New Note & Templates */}
-      <div className="p-3 border-b border-slate-200/60 dark:border-slate-800/60 space-y-2.5">
+      <div className="p-3 border-b border-[#2d2d2d] space-y-2.5">
         <div className="relative">
-          <div className="flex rounded-xl shadow-sm overflow-hidden border border-purple-600/30">
+          <div className="flex rounded-xl shadow-sm overflow-hidden border border-cyan-600/30">
             <button
               onClick={() => onCreateNote('blank')}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-purple-700 hover:bg-purple-800 text-white font-medium text-xs transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-medium text-xs transition-colors shadow-sm"
             >
               <Plus className="w-4 h-4" />
               <span>New Note</span>
             </button>
             <button
               onClick={() => setShowTemplateMenu(!showTemplateMenu)}
-              className="px-2.5 bg-purple-800 hover:bg-purple-900 text-white border-l border-purple-600/40 transition-colors"
+              className="px-2.5 bg-cyan-700 hover:bg-cyan-600 text-white border-l border-cyan-500/40 transition-colors"
               title="Note Templates"
             >
               <ChevronDown className="w-3.5 h-3.5" />
@@ -137,7 +137,7 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
 
           {/* Template Dropdown Menu */}
           {showTemplateMenu && (
-            <div className="absolute left-0 right-0 top-full mt-1 bg-white dark:bg-slate-900 rounded-xl shadow-2xl border border-slate-200 dark:border-slate-800 p-1.5 z-40 animate-fade-in text-xs space-y-0.5">
+            <div className="absolute left-0 right-0 top-full mt-1 bg-[#252525] rounded-xl shadow-2xl border border-[#333333] p-1.5 z-40 animate-fade-in text-xs space-y-0.5">
               <div className="px-2.5 py-1 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
                 Create from Template
               </div>
@@ -146,9 +146,9 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
                   onCreateNote('blank');
                   setShowTemplateMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 hover:text-purple-700 text-left"
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-cyan-950/50 hover:text-cyan-300 text-left transition-colors"
               >
-                <Plus className="w-3.5 h-3.5 text-purple-600" />
+                <Plus className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Blank Canvas</span>
               </button>
               <button
@@ -156,9 +156,9 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
                   onCreateNote('lined');
                   setShowTemplateMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-blue-50 dark:hover:bg-blue-950/40 hover:text-blue-600 text-left"
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-cyan-950/50 hover:text-cyan-300 text-left transition-colors"
               >
-                <FileText className="w-3.5 h-3.5 text-blue-600" />
+                <FileText className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Lined Notebook Paper</span>
               </button>
               <button
@@ -166,9 +166,9 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
                   onCreateNote('grid');
                   setShowTemplateMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 hover:text-emerald-600 text-left"
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-cyan-950/50 hover:text-cyan-300 text-left transition-colors"
               >
-                <Grid className="w-3.5 h-3.5 text-emerald-600" />
+                <Grid className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Grid Math Graph</span>
               </button>
               <button
@@ -176,9 +176,9 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
                   onCreateNote('meeting');
                   setShowTemplateMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-amber-50 dark:hover:bg-amber-950/40 hover:text-amber-600 text-left"
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-cyan-950/50 hover:text-cyan-300 text-left transition-colors"
               >
-                <CheckSquare className="w-3.5 h-3.5 text-amber-600" />
+                <CheckSquare className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Meeting Notes</span>
               </button>
               <button
@@ -186,9 +186,9 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
                   onCreateNote('brainstorm');
                   setShowTemplateMenu(false);
                 }}
-                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-purple-50 dark:hover:bg-purple-950/40 hover:text-purple-600 text-left"
+                className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-cyan-950/50 hover:text-cyan-300 text-left transition-colors"
               >
-                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Brainstorm Mindmap</span>
               </button>
             </div>
@@ -207,16 +207,16 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
       {/* Note List Scroll Area */}
       <div className="flex-1 overflow-y-auto p-3">
         <div className="flex items-center justify-between mb-2 px-1">
-          <span className="text-[11px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+          <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
             Notes ({notes.length})
           </span>
           <button
             onClick={onRefresh}
             disabled={isRefreshing}
-            className="p-1 rounded text-slate-400 hover:text-purple-600 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+            className="p-1 rounded text-slate-400 hover:text-cyan-400 hover:bg-[#2d2d2d] transition-colors"
             title="Refresh notes from Google Drive"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-purple-600' : ''}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin text-cyan-400' : ''}`} />
           </button>
         </div>
 
@@ -232,7 +232,7 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
       </div>
 
       {/* Import File Button */}
-      <div className="px-3 py-2 border-t border-slate-200/60 dark:border-slate-800/60">
+      <div className="px-3 py-2 border-t border-[#2d2d2d]">
         <input
           ref={fileInputRef}
           type="file"
@@ -242,7 +242,7 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
         />
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="w-full flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg border border-dashed border-slate-300 dark:border-slate-700 hover:border-purple-500 hover:bg-purple-50/50 dark:hover:bg-purple-950/20 text-slate-600 dark:text-slate-400 hover:text-purple-700 dark:hover:text-purple-300 text-xs font-medium transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-1.5 px-3 rounded-lg border border-dashed border-[#3d3d3d] hover:border-cyan-500 hover:bg-cyan-950/20 text-slate-400 hover:text-cyan-300 text-xs font-medium transition-colors"
         >
           <Upload className="w-3.5 h-3.5" />
           <span>Import .excalidraw</span>
@@ -250,7 +250,7 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
       </div>
 
       {/* Bottom User Profile & Drive Info */}
-      <div className="p-3 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between">
+      <div className="p-3 border-t border-[#2d2d2d] bg-[#181818] flex items-center justify-between">
         <UserMenu driveFolderId={driveFolderId} />
       </div>
     </aside>

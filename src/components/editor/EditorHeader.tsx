@@ -63,15 +63,15 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   };
 
   return (
-    <header className="h-14 border-b border-slate-800 bg-slate-950/95 backdrop-blur-md px-4 flex items-center justify-between gap-4 select-none z-20">
+    <header className="h-14 border-b border-[#2d2d2d] bg-[#181818] px-4 flex items-center justify-between gap-4 select-none z-20">
       {/* Left: Sidebar Toggle & Note Title */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={onToggleSidebar}
           className={`p-2 rounded-lg transition-all flex items-center gap-1.5 text-xs font-semibold ${
             isSidebarOpen
-              ? 'bg-purple-900/40 text-purple-300 border border-purple-700/60'
-              : 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 shadow-sm'
+              ? 'bg-cyan-950/50 text-cyan-300 border border-cyan-600/60 shadow-inner'
+              : 'bg-[#252525] hover:bg-[#2d2d2d] text-slate-100 border border-[#383838] shadow-sm'
           }`}
           title={isSidebarOpen ? 'Hide Notebooks Sidebar' : 'Show Notebooks Sidebar'}
         >
@@ -88,7 +88,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                   type="text"
                   value={titleInput}
                   onChange={(e) => setTitleInput(e.target.value)}
-                  className="text-sm font-semibold px-2 py-1 bg-slate-50 dark:bg-slate-800 border border-purple-500 rounded-md focus:outline-none"
+                  className="text-sm font-semibold px-2 py-1 bg-[#252525] border border-cyan-500 rounded-md focus:outline-none text-white"
                   onKeyDown={(e) => {
                     if (e.key === 'Escape') {
                       setTitleInput(note.title);
@@ -98,7 +98,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                 />
                 <button
                   type="submit"
-                  className="p-1 text-emerald-600 hover:bg-emerald-50 rounded"
+                  className="p-1 text-emerald-500 hover:bg-[#2d2d2d] rounded"
                 >
                   <Check className="w-4 h-4" />
                 </button>
@@ -108,7 +108,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
                     setTitleInput(note.title);
                     setIsEditingTitle(false);
                   }}
-                  className="p-1 text-slate-400 hover:bg-slate-100 rounded"
+                  className="p-1 text-slate-400 hover:bg-[#2d2d2d] rounded"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -116,9 +116,9 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
             ) : (
               <div
                 onClick={() => setIsEditingTitle(true)}
-                className="group flex items-center gap-1.5 cursor-pointer py-1 px-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                className="group flex items-center gap-1.5 cursor-pointer py-1 px-2 rounded-lg hover:bg-[#252525] transition-colors"
               >
-                <h2 className="text-sm font-bold text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-xs md:max-w-sm">
+                <h2 className="text-sm font-bold text-white truncate max-w-[200px] sm:max-w-xs md:max-w-sm">
                   {note.title || 'Untitled Note'}
                 </h2>
                 <Edit2 className="w-3.5 h-3.5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -145,7 +145,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
           <>
             <button
               onClick={onExportExcalidraw}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-purple-600 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-400 hover:bg-[#252525] rounded-lg transition-colors"
               title="Export as .excalidraw file"
             >
               <Download className="w-3.5 h-3.5" />

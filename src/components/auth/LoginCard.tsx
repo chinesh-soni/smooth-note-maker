@@ -21,41 +21,41 @@ export const LoginCard: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-8">
+    <div className="w-full max-w-md bg-[#202020] rounded-2xl shadow-2xl border border-[#333333] p-8">
       {/* Brand Header */}
       <div className="flex flex-col items-center text-center mb-8">
-        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white shadow-lg shadow-purple-500/20 mb-4">
+        <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20 mb-4">
           <PenTool className="w-8 h-8" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+        <h1 className="text-2xl font-bold text-white">
           Smooth Note Maker
         </h1>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-sm text-slate-400 mt-1">
           Handwritten note library backed by your Google Drive
         </p>
       </div>
 
       {/* OAuth Setup Banner when credentials missing */}
       {authError && (
-        <div className="mb-6 p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/80 text-amber-900 dark:text-amber-200 text-xs">
+        <div className="mb-6 p-3.5 rounded-xl bg-amber-950/50 border border-amber-800/80 text-amber-200 text-xs">
           <div className="flex items-start gap-2.5 font-semibold mb-1">
-            <KeyRound className="w-4 h-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
-            <span>Google Credentials Required in .env.local</span>
+            <KeyRound className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+            <span>Google Credentials Required</span>
           </div>
-          <p className="text-amber-800/90 dark:text-amber-300 text-[11px] leading-relaxed">
-            Please provide your <code className="bg-amber-100 dark:bg-amber-900 px-1 py-0.5 rounded font-mono">GOOGLE_CLIENT_ID</code> and <code className="bg-amber-100 dark:bg-amber-900 px-1 py-0.5 rounded font-mono">GOOGLE_CLIENT_SECRET</code> in <code className="bg-amber-100 dark:bg-amber-900 px-1 py-0.5 rounded font-mono">.env.local</code> to enable Google sign-in.
+          <p className="text-amber-300 text-[11px] leading-relaxed">
+            Please configure your Google OAuth credentials in Vercel environment variables.
           </p>
         </div>
       )}
 
       {/* Feature Highlights */}
-      <div className="space-y-3 mb-8 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-        <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-          <Cloud className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+      <div className="space-y-3 mb-8 bg-[#1a1a1a] p-4 rounded-xl border border-[#2d2d2d]">
+        <div className="flex items-center gap-3 text-xs text-slate-300">
+          <Cloud className="w-4 h-4 text-cyan-400 flex-shrink-0" />
           <span>Synced directly to your private Google Drive</span>
         </div>
-        <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
-          <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+        <div className="flex items-center gap-3 text-xs text-slate-300">
+          <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
           <span>Minimum drive.file permission only</span>
         </div>
         <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-300">
@@ -68,10 +68,10 @@ export const LoginCard: React.FC = () => {
       <button
         onClick={handleGoogleSignIn}
         disabled={isLoading}
-        className="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/80 text-slate-700 dark:text-slate-200 font-medium text-sm shadow-sm transition-all hover:shadow focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full flex items-center justify-center gap-3 px-5 py-3 rounded-xl border border-[#383838] bg-[#252525] hover:bg-[#2d2d2d] text-slate-100 font-medium text-sm shadow-sm transition-all hover:shadow focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isLoading ? (
-          <div className="w-5 h-5 border-2 border-purple-600 border-t-transparent rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
         ) : (
           <svg className="w-5 h-5" viewBox="0 0 24 24">
             <path
