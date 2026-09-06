@@ -62,6 +62,16 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   // Stable API setter that doesn't trigger component re-renders
   const handleExcalidrawAPI = useCallback((api: any) => {
     excalidrawAPIRef.current = api;
+    // Enforce clean black background and remove any grid lines (OneNote dark mode)
+    setTimeout(() => {
+      api.updateScene({
+        appState: {
+          viewBackgroundColor: '#121212',
+          gridSize: null,
+          theme: 'dark',
+        },
+      });
+    }, 100);
   }, []);
 
   // When active note changes from outside (switching notes in library)
@@ -74,6 +84,9 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
         elements: note.elements || [],
         appState: {
           ...note.appState,
+          viewBackgroundColor: '#121212',
+          gridSize: null,
+          theme: 'dark',
           collaborators: undefined,
         },
       });
@@ -98,8 +111,8 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
         ...current,
         elements,
         appState: {
-          viewBackgroundColor: appState.viewBackgroundColor || '#121212',
-          gridSize: appState.gridSize,
+          viewBackgroundColor: '#121212',
+          gridSize: null,
           theme: 'dark',
           zoom: appState.zoom,
           scrollX: appState.scrollX,
@@ -119,11 +132,8 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     () => ({
       elements: note.elements || [],
       appState: {
-        viewBackgroundColor:
-          note.appState?.viewBackgroundColor && note.appState.viewBackgroundColor !== '#ffffff'
-            ? note.appState.viewBackgroundColor
-            : '#121212',
-        gridSize: note.appState?.gridSize || null,
+        viewBackgroundColor: '#121212',
+        gridSize: null,
         theme: 'dark' as const,
         currentItemStrokeColor: '#ffffff',
         zoom: note.appState?.zoom || { value: 1 },

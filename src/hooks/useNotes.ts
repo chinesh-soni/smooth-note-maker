@@ -123,10 +123,8 @@ export function useNotes() {
           ...local,
           appState: {
             ...local.appState,
-            viewBackgroundColor:
-              local.appState?.viewBackgroundColor && local.appState.viewBackgroundColor !== '#ffffff'
-                ? local.appState.viewBackgroundColor
-                : '#121212',
+            viewBackgroundColor: '#121212',
+            gridSize: null,
             theme: 'dark',
           },
         };
@@ -144,10 +142,8 @@ export function useNotes() {
             ...data.note,
             appState: {
               ...data.note.appState,
-              viewBackgroundColor:
-                data.note.appState?.viewBackgroundColor && data.note.appState.viewBackgroundColor !== '#ffffff'
-                  ? data.note.appState.viewBackgroundColor
-                  : '#121212',
+              viewBackgroundColor: '#121212',
+              gridSize: null,
               theme: 'dark',
             },
           };
@@ -164,6 +160,7 @@ export function useNotes() {
           appState: {
             ...local.appState,
             viewBackgroundColor: '#121212',
+            gridSize: null,
             theme: 'dark',
           },
         });

@@ -23,7 +23,7 @@ export function createTemplateNote(type: TemplateType, title?: string): Partial<
 
     case 'grid':
       appState.viewBackgroundColor = '#121212';
-      appState.gridSize = 20;
+      appState.gridSize = null;
       elements = createGridElements();
       break;
 

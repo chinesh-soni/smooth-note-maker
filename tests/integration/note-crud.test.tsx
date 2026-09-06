@@ -36,7 +36,7 @@ describe('Note Library CRUD Operations', () => {
 
     const grid = createTemplateNote('grid');
     expect(grid.title).toBe('Grid Graph Note');
-    expect(grid.appState?.gridSize).toBe(20);
+    expect(grid.appState?.gridSize).toBeNull();
 
     const meeting = createTemplateNote('meeting');
     expect(meeting.title).toBe('Meeting Minutes');
