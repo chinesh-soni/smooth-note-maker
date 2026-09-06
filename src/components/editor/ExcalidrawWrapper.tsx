@@ -4,6 +4,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import { Note } from '@/types/note';
 import { Spinner } from '@/components/ui/Spinner';
+import { sanitizeElementsForDarkTheme } from '@/lib/excalidraw/sanitize';
 
 // Dynamically import Excalidraw with SSR disabled
 const ExcalidrawComponent = dynamic(
@@ -41,10 +42,6 @@ interface ExcalidrawWrapperProps {
   onChange: (note: Note) => void;
 }
 
-import { sanitizeDarkStrokesToWhite } from '@/lib/excalidraw/sanitize';
-
-// Static UI Options to avoid re-creating on every render
-
 export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   note,
   onChange,
@@ -66,18 +63,18 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   // Stable API setter that doesn't trigger component re-renders
   const handleExcalidrawAPI = useCallback((api: any) => {
     excalidrawAPIRef.current = api;
-    // Enforce clean OneNote black background, white pen stroke, and convert existing dark strokes
+    // Enforce Excalidraw dark theme (#ffffff viewBackgroundColor inverts to solid #121212 dark, stroke #1e1e1e inverts to white ink)
     const enforceDark = () => {
       const currentElements = api.getSceneElements() || [];
-      const sanitized = sanitizeDarkStrokesToWhite(currentElements);
+      const sanitized = sanitizeElementsForDarkTheme(currentElements);
       api.updateScene({
         elements: sanitized,
         appState: {
           ...api.getAppState(),
-          viewBackgroundColor: '#1b1b1b',
+          viewBackgroundColor: '#ffffff',
           gridSize: null,
           theme: 'dark',
-          currentItemStrokeColor: '#ffffff',
+          currentItemStrokeColor: '#1e1e1e',
         },
       });
     };
@@ -92,15 +89,15 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     if (activeNoteIdRef.current !== note.id && excalidrawAPIRef.current) {
       activeNoteIdRef.current = note.id;
 
-      const sanitized = sanitizeDarkStrokesToWhite(note.elements || []);
+      const sanitized = sanitizeElementsForDarkTheme(note.elements || []);
       excalidrawAPIRef.current.updateScene({
         elements: sanitized,
         appState: {
           ...note.appState,
-          viewBackgroundColor: '#1b1b1b',
+          viewBackgroundColor: '#ffffff',
           gridSize: null,
           theme: 'dark',
-          currentItemStrokeColor: '#ffffff',
+          currentItemStrokeColor: '#1e1e1e',
           collaborators: undefined,
         },
       });
@@ -120,10 +117,10 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
         ...current,
         elements,
         appState: {
-          viewBackgroundColor: '#1b1b1b',
+          viewBackgroundColor: '#ffffff',
           gridSize: null,
           theme: 'dark',
-          currentItemStrokeColor: appState.currentItemStrokeColor || '#ffffff',
+          currentItemStrokeColor: appState.currentItemStrokeColor || '#1e1e1e',
           zoom: appState.zoom,
           scrollX: appState.scrollX,
           scrollY: appState.scrollY,
@@ -137,15 +134,15 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     []
   );
 
-  // Memoize initialData per note ID (OneNote black theme default with white strokes)
+  // Memoize initialData per note ID (Native dark theme: viewBackgroundColor #ffffff -> #121212, stroke #1e1e1e -> crisp white)
   const initialData = React.useMemo(
     () => ({
-      elements: sanitizeDarkStrokesToWhite(note.elements || []),
+      elements: sanitizeElementsForDarkTheme(note.elements || []),
       appState: {
-        viewBackgroundColor: '#1b1b1b',
+        viewBackgroundColor: '#ffffff',
         gridSize: null,
         theme: 'dark' as const,
-        currentItemStrokeColor: '#ffffff',
+        currentItemStrokeColor: '#1e1e1e',
         zoom: note.appState?.zoom || { value: 1 },
         scrollX: note.appState?.scrollX || 0,
         scrollY: note.appState?.scrollY || 0,
@@ -157,7 +154,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   );
 
   return (
-    <div className="w-full h-full relative excalidraw-container bg-[#1b1b1b]">
+    <div className="w-full h-full relative excalidraw-container bg-[#121212]">
       <ExcalidrawComponent
         theme="dark"
         excalidrawAPI={handleExcalidrawAPI}

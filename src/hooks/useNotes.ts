@@ -125,10 +125,10 @@ export function useNotes() {
           elements: sanitizeDarkStrokesToWhite(local.elements || []),
           appState: {
             ...local.appState,
-            viewBackgroundColor: '#1b1b1b',
+            viewBackgroundColor: '#ffffff',
             gridSize: null,
             theme: 'dark',
-            currentItemStrokeColor: '#ffffff',
+            currentItemStrokeColor: '#1e1e1e',
           },
         };
         setActiveNote(blackboardNote);
@@ -146,10 +146,10 @@ export function useNotes() {
             elements: sanitizeDarkStrokesToWhite(data.note.elements || []),
             appState: {
               ...data.note.appState,
-              viewBackgroundColor: '#1b1b1b',
+              viewBackgroundColor: '#ffffff',
               gridSize: null,
               theme: 'dark',
-              currentItemStrokeColor: '#ffffff',
+              currentItemStrokeColor: '#1e1e1e',
             },
           };
           setActiveNote(remoteNote);
@@ -165,10 +165,10 @@ export function useNotes() {
           elements: sanitizeDarkStrokesToWhite(local.elements || []),
           appState: {
             ...local.appState,
-            viewBackgroundColor: '#1b1b1b',
+            viewBackgroundColor: '#ffffff',
             gridSize: null,
             theme: 'dark',
-            currentItemStrokeColor: '#ffffff',
+            currentItemStrokeColor: '#1e1e1e',
           },
         });
       }

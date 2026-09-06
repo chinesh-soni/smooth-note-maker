@@ -1,29 +1,20 @@
 ﻿/**
- * Sanitizes strokes for OneNote blackboard dark theme:
- * Converts any black/dark pen strokes to crisp white ink.
+ * Sanitizes elements for Excalidraw native dark theme:
+ * In Excalidraw dark theme, the canvas has an invert(93%) filter.
+ * Stroke #1e1e1e renders as crisp white ink.
+ * If an element was previously saved with #ffffff, it inverts to black,
+ * so we convert it to #1e1e1e so it renders in bright white ink.
  */
-export function sanitizeDarkStrokesToWhite(elements: readonly any[]): any[] {
+export function sanitizeElementsForDarkTheme(elements: readonly any[]): any[] {
   return (elements || []).map((el: any) => {
     if (!el) return el;
     const stroke = (el.strokeColor || '').toLowerCase().trim();
-    const isDark =
-      !stroke ||
-      [
-        '#000000',
-        '#000',
-        '#1e1e1e',
-        '#121212',
-        '#181818',
-        '#2d3748',
-        '#333333',
-        '#333',
-        '#0f172a',
-        '#111111',
-        '#111',
-        'rgb(0, 0, 0)',
-        'rgba(0, 0, 0, 1)',
-      ].includes(stroke);
-
-    return isDark ? { ...el, strokeColor: '#ffffff' } : el;
+    if (stroke === '#ffffff' || stroke === '#fff' || stroke === 'rgb(255, 255, 255)' || !stroke) {
+      return { ...el, strokeColor: '#1e1e1e' };
+    }
+    return el;
   });
 }
+
+// Backwards-compatible alias
+export const sanitizeDarkStrokesToWhite = sanitizeElementsForDarkTheme;
