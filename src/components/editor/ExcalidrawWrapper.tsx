@@ -1,0 +1,145 @@
+'use client';
+
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import dynamic from 'next/dynamic';
+import { Note } from '@/types/note';
+import { Spinner } from '@/components/ui/Spinner';
+
+// Dynamically import Excalidraw with SSR disabled
+const ExcalidrawComponent = dynamic(
+  async () => {
+    const mod = await import('@excalidraw/excalidraw');
+    return mod.Excalidraw;
+  },
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex flex-col items-center justify-center h-full w-full bg-slate-50 dark:bg-slate-950">
+        <Spinner size="lg" />
+        <p className="mt-3 text-xs text-slate-500 font-medium">Loading canvas...</p>
+      </div>
+    ),
+  }
+);
+
+// Static UI Options to avoid re-creating on every render
+const UI_OPTIONS = {
+  canvasActions: {
+    changeViewBackgroundColor: true,
+    clearCanvas: true,
+    export: {
+      saveFileToDisk: true,
+    },
+    loadScene: true,
+    saveToActiveFile: false,
+    toggleTheme: true,
+  },
+};
+
+interface ExcalidrawWrapperProps {
+  note: Note;
+  onChange: (note: Note) => void;
+}
+
+export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
+  note,
+  onChange,
+}) => {
+  const excalidrawAPIRef = useRef<any>(null);
+  const activeNoteIdRef = useRef<string>(note.id);
+  const isInternalChangeRef = useRef<boolean>(false);
+
+  const noteRef = useRef<Note>(note);
+  useEffect(() => {
+    noteRef.current = note;
+  }, [note]);
+
+  const onChangeRef = useRef(onChange);
+  useEffect(() => {
+    onChangeRef.current = onChange;
+  }, [onChange]);
+
+  // Stable API setter that doesn't trigger component re-renders
+  const handleExcalidrawAPI = useCallback((api: any) => {
+    excalidrawAPIRef.current = api;
+  }, []);
+
+  // When active note changes from outside (switching notes in library)
+  useEffect(() => {
+    if (activeNoteIdRef.current !== note.id && excalidrawAPIRef.current) {
+      activeNoteIdRef.current = note.id;
+      isInternalChangeRef.current = true;
+
+      excalidrawAPIRef.current.updateScene({
+        elements: note.elements || [],
+        appState: {
+          ...note.appState,
+          collaborators: undefined,
+        },
+      });
+
+      if (note.files) {
+        excalidrawAPIRef.current.addFiles(Object.values(note.files));
+      }
+
+      setTimeout(() => {
+        isInternalChangeRef.current = false;
+      }, 100);
+    }
+  }, [note.id]);
+
+  // Stable change handler with 0 dependencies so Excalidraw never sees a changing prop
+  const handleChange = useCallback(
+    (elements: readonly any[], appState: Record<string, any>, files: Record<string, any>) => {
+      if (isInternalChangeRef.current) return;
+      const current = noteRef.current;
+
+      const updatedNote: Note = {
+        ...current,
+        elements,
+        appState: {
+          viewBackgroundColor: appState.viewBackgroundColor,
+          gridSize: appState.gridSize,
+          theme: appState.theme,
+          zoom: appState.zoom,
+          scrollX: appState.scrollX,
+          scrollY: appState.scrollY,
+        },
+        files: files || {},
+        updatedAt: Date.now(),
+      };
+
+      onChangeRef.current(updatedNote);
+    },
+    []
+  );
+
+  // Memoize initialData per note ID
+  const initialData = React.useMemo(
+    () => ({
+      elements: note.elements || [],
+      appState: {
+        viewBackgroundColor: note.appState?.viewBackgroundColor || '#ffffff',
+        gridSize: note.appState?.gridSize || null,
+        theme: note.appState?.theme || 'light',
+        zoom: note.appState?.zoom || { value: 1 },
+        scrollX: note.appState?.scrollX || 0,
+        scrollY: note.appState?.scrollY || 0,
+      },
+      files: note.files || {},
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [note.id]
+  );
+
+  return (
+    <div className="w-full h-full relative excalidraw-container">
+      <ExcalidrawComponent
+        excalidrawAPI={handleExcalidrawAPI}
+        initialData={initialData}
+        onChange={handleChange}
+        UIOptions={UI_OPTIONS}
+      />
+    </div>
+  );
+};
