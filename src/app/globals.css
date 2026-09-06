@@ -33,6 +33,29 @@ body {
   width: 100% !important;
 }
 
+/* Hide all floating toolbars, menus, and zoom controls when in clean/focus mode */
+.excalidraw-container[data-focus-mode="true"] .App-toolbar,
+.excalidraw-container[data-focus-mode="true"] .App-toolbar-container,
+.excalidraw-container[data-focus-mode="true"] .App-toolbar-content,
+.excalidraw-container[data-focus-mode="true"] .layer-ui__wrapper__footer,
+.excalidraw-container[data-focus-mode="true"] .layer-ui__wrapper__footer-left,
+.excalidraw-container[data-focus-mode="true"] .layer-ui__wrapper__footer-right,
+.excalidraw-container[data-focus-mode="true"] .footer-center,
+.excalidraw-container[data-focus-mode="true"] .App-menu__left,
+.excalidraw-container[data-focus-mode="true"] .App-menu,
+.excalidraw-container[data-focus-mode="true"] .layer-ui__wrapper .Island,
+.excalidraw-container[data-focus-mode="true"] .layer-ui__wrapper .Stack,
+.excalidraw-container[data-focus-mode="true"] .disable-zen-mode,
+.excalidraw-container[data-focus-mode="true"] .zen-mode-transition,
+.excalidraw-container[data-focus-mode="true"] .HintViewer,
+.excalidraw-container[data-focus-mode="true"] .sidebar-trigger,
+.excalidraw-container[data-focus-mode="true"] .layer-ui__wrapper__top-right {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
 /* Animation keyframes */
 @keyframes fadeIn {
   from { opacity: 0; }

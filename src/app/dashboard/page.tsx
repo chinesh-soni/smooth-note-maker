@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNotes } from '@/hooks/useNotes';
 import { useAutosave } from '@/hooks/useAutosave';
 import { useSyncQueue } from '@/hooks/useSyncQueue';
@@ -26,6 +26,25 @@ export default function DashboardPage() {
       return next;
     });
   };
+
+  // Keyboard shortcut Alt+Z to toggle focus mode / overlays anytime
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLInputElement ||
+        e.target instanceof HTMLTextAreaElement ||
+        (e.target as HTMLElement)?.isContentEditable
+      ) {
+        return;
+      }
+      if (e.altKey && (e.key === 'z' || e.key === 'Z')) {
+        e.preventDefault();
+        setIsFocusMode((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const { showToast } = useToast();
 

@@ -155,8 +155,23 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     [note.id]
   );
 
+  // Keep Excalidraw's internal zenMode state in sync
+  useEffect(() => {
+    if (excalidrawAPIRef.current) {
+      excalidrawAPIRef.current.updateScene({
+        appState: {
+          ...excalidrawAPIRef.current.getAppState(),
+          zenModeEnabled: zenMode,
+        },
+      });
+    }
+  }, [zenMode]);
+
   return (
-    <div className="w-full h-full relative excalidraw-container bg-[#121212]">
+    <div
+      className="w-full h-full relative excalidraw-container bg-[#121212]"
+      data-focus-mode={zenMode ? 'true' : 'false'}
+    >
       <ExcalidrawComponent
         theme="dark"
         zenModeEnabled={zenMode}
