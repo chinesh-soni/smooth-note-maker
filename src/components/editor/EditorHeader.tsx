@@ -8,6 +8,7 @@ import {
   Edit2,
   Eye,
   EyeOff,
+  Keyboard,
 } from 'lucide-react';
 
 interface EditorHeaderProps {
@@ -18,6 +19,7 @@ interface EditorHeaderProps {
   isSidebarOpen: boolean;
   isFocusMode?: boolean;
   onToggleFocusMode?: () => void;
+  onOpenShortcuts?: () => void;
 }
 
 export const EditorHeader: React.FC<EditorHeaderProps> = ({
@@ -28,6 +30,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   isSidebarOpen,
   isFocusMode = false,
   onToggleFocusMode,
+  onOpenShortcuts,
 }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [titleInput, setTitleInput] = useState(note?.title || '');
@@ -65,7 +68,7 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
               ? 'bg-cyan-950/50 text-cyan-300 border border-cyan-600/60 shadow-inner'
               : 'bg-[#252525] hover:bg-[#2d2d2d] text-slate-100 border border-[#383838] shadow-sm'
           }`}
-          title={isSidebarOpen ? 'Hide Notebooks Sidebar' : 'Show Notebooks Sidebar'}
+          title={isSidebarOpen ? 'Hide Notebooks Sidebar (Ctrl+B)' : 'Show Notebooks Sidebar (Ctrl+B)'}
         >
           <PanelLeft className="w-4 h-4" />
           <span className="hidden sm:inline">Notebooks</span>
@@ -138,6 +141,17 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
               >
                 {isFocusMode ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
                 <span className="hidden sm:inline">{isFocusMode ? 'Show Tools' : 'Hide Tools'}</span>
+              </button>
+            )}
+
+            {onOpenShortcuts && (
+              <button
+                onClick={onOpenShortcuts}
+                className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-400 bg-[#252525] hover:bg-[#2d2d2d] border border-[#383838] rounded-lg transition-colors"
+                title="Keyboard Shortcuts (?)"
+              >
+                <Keyboard className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Shortcuts</span>
               </button>
             )}
 

@@ -12,12 +12,14 @@ import { useToast } from '@/components/ui/Toast';
 import { TemplateType, Note } from '@/types/note';
 import { downloadExcalidrawFile, readExcalidrawFromFile } from '@/lib/excalidraw/export';
 import { Spinner } from '@/components/ui/Spinner';
+import { ShortcutsModal } from '@/components/editor/ShortcutsModal';
 
 export default function DashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isFocusMode, setIsFocusMode] = useState(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false);
 
-  const handleToggleSidebar = () => {
+  const handleToggleSidebar = useCallback(() => {
     setIsSidebarOpen((prev) => {
       const next = !prev;
       // Closing sidebar enters full-screen clean note mode (hides overlays)
@@ -25,26 +27,48 @@ export default function DashboardPage() {
       setIsFocusMode(!next);
       return next;
     });
-  };
+  }, []);
 
-  // Keyboard shortcut Alt+Z to toggle focus mode / overlays anytime
+  // Keyboard shortcut listener:
+  // - Ctrl+B (Cmd+B): Toggle Notebooks Sidebar
+  // - Alt+Z: Toggle Clean Focus Mode / Overlays
+  // - ?: Open Shortcuts Modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
       if (
-        e.target instanceof HTMLInputElement ||
-        e.target instanceof HTMLTextAreaElement ||
-        (e.target as HTMLElement)?.isContentEditable
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target?.isContentEditable ||
+        target?.closest('.excalidraw-wysiwyg')
       ) {
         return;
       }
+
+      // Ctrl+B / Cmd+B to toggle sidebar
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'b' || e.key === 'B')) {
+        e.preventDefault();
+        handleToggleSidebar();
+        return;
+      }
+
+      // Alt+Z to toggle focus mode
       if (e.altKey && (e.key === 'z' || e.key === 'Z')) {
         e.preventDefault();
         setIsFocusMode((prev) => !prev);
+        return;
+      }
+
+      // '?' (Shift+/) to toggle shortcuts modal
+      if (e.key === '?' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+        return;
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [handleToggleSidebar]);
 
   const { showToast } = useToast();
 
@@ -186,6 +210,7 @@ export default function DashboardPage() {
           isSidebarOpen={isSidebarOpen}
           isFocusMode={isFocusMode}
           onToggleFocusMode={() => setIsFocusMode(!isFocusMode)}
+          onOpenShortcuts={() => setIsShortcutsOpen(true)}
         />
 
         <div className="flex-1 relative overflow-hidden bg-[#1b1b1b]">
@@ -206,6 +231,12 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
+
+      {/* Keyboard Shortcuts Cheatsheet Modal */}
+      <ShortcutsModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
+      />
     </div>
   );
 }

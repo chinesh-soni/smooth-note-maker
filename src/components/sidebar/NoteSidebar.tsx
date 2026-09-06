@@ -109,7 +109,7 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
           <button
             onClick={onToggleOpen}
             className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-[#2d2d2d] transition-colors flex-shrink-0"
-            title="Collapse sidebar"
+            title="Collapse sidebar (Ctrl+B)"
           >
             <PanelLeftClose className="w-4 h-4" />
           </button>

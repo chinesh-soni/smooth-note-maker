@@ -155,6 +155,89 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     [note.id]
   );
 
+  // Floating HUD when tool changes via shortcut
+  const [toolHud, setToolHud] = useState<{ label: string; icon: string; shortcut: string } | null>(null);
+  const toolHudTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const showToolHud = useCallback((label: string, icon: string, shortcut: string) => {
+    if (toolHudTimerRef.current) clearTimeout(toolHudTimerRef.current);
+    setToolHud({ label, icon, shortcut });
+    toolHudTimerRef.current = setTimeout(() => {
+      setToolHud(null);
+    }, 1200);
+  }, []);
+
+  // Bulletproof global keyboard shortcut listener for tools
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore when typing in any text inputs or Excalidraw's inline text editor
+      const target = e.target as HTMLElement | null;
+      if (
+        target instanceof HTMLInputElement ||
+        target instanceof HTMLTextAreaElement ||
+        target?.isContentEditable ||
+        target?.closest('.excalidraw-wysiwyg') ||
+        target?.classList.contains('excalidraw-wysiwyg')
+      ) {
+        return;
+      }
+
+      // Ignore if modifier keys like Ctrl, Cmd, Alt are pressed
+      if (e.ctrlKey || e.metaKey || e.altKey) {
+        return;
+      }
+
+      const key = e.key.toLowerCase();
+      const TOOL_MAP: Record<string, { type: any; label: string; icon: string; shortcut: string }> = {
+        '1': { type: 'selection', label: 'Selection', icon: '👆', shortcut: '1 / V' },
+        'v': { type: 'selection', label: 'Selection', icon: '👆', shortcut: '1 / V' },
+        '2': { type: 'rectangle', label: 'Rectangle', icon: '🔲', shortcut: '2 / R' },
+        'r': { type: 'rectangle', label: 'Rectangle', icon: '🔲', shortcut: '2 / R' },
+        '3': { type: 'diamond', label: 'Diamond', icon: '🔷', shortcut: '3 / D' },
+        'd': { type: 'diamond', label: 'Diamond', icon: '🔷', shortcut: '3 / D' },
+        '4': { type: 'ellipse', label: 'Ellipse', icon: '⭕', shortcut: '4 / O' },
+        'o': { type: 'ellipse', label: 'Ellipse', icon: '⭕', shortcut: '4 / O' },
+        '5': { type: 'arrow', label: 'Arrow', icon: '➡️', shortcut: '5 / A' },
+        'a': { type: 'arrow', label: 'Arrow', icon: '➡️', shortcut: '5 / A' },
+        '6': { type: 'line', label: 'Line', icon: '📏', shortcut: '6 / L' },
+        'l': { type: 'line', label: 'Line', icon: '📏', shortcut: '6 / L' },
+        '7': { type: 'freedraw', label: 'Draw / Pen', icon: '✏️', shortcut: '7 / P' },
+        'p': { type: 'freedraw', label: 'Draw / Pen', icon: '✏️', shortcut: '7 / P' },
+        'x': { type: 'freedraw', label: 'Draw / Pen', icon: '✏️', shortcut: '7 / P' },
+        '8': { type: 'text', label: 'Text', icon: '🅰️', shortcut: '8 / T' },
+        't': { type: 'text', label: 'Text', icon: '🅰️', shortcut: '8 / T' },
+        '9': { type: 'image', label: 'Image', icon: '🖼️', shortcut: '9' },
+        '0': { type: 'eraser', label: 'Eraser', icon: '🧹', shortcut: '0 / E' },
+        'e': { type: 'eraser', label: 'Eraser', icon: '🧹', shortcut: '0 / E' },
+        'h': { type: 'hand', label: 'Hand / Pan', icon: '✋', shortcut: 'H' },
+      };
+
+      if (key === 'q') {
+        e.preventDefault();
+        if (excalidrawAPIRef.current) {
+          const appState = excalidrawAPIRef.current.getAppState();
+          const locked = !appState.activeTool?.locked;
+          excalidrawAPIRef.current.setActiveTool({
+            ...appState.activeTool,
+            locked,
+          });
+          showToolHud(locked ? 'Tool Locked' : 'Tool Unlocked', locked ? '🔒' : '🔓', 'Q');
+        }
+        return;
+      }
+
+      const match = TOOL_MAP[key];
+      if (match && excalidrawAPIRef.current) {
+        e.preventDefault();
+        excalidrawAPIRef.current.setActiveTool({ type: match.type });
+        showToolHud(match.label, match.icon, match.shortcut);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showToolHud]);
+
   // Keep Excalidraw's internal zenMode state in sync
   useEffect(() => {
     if (excalidrawAPIRef.current) {
@@ -172,9 +255,22 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
       className="w-full h-full relative excalidraw-container bg-[#121212]"
       data-focus-mode={zenMode ? 'true' : 'false'}
     >
+      {/* Floating HUD feedback indicator for active tool */}
+      {toolHud && (
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 pointer-events-none animate-fade-in flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#1e1e1e]/90 backdrop-blur-md border border-[#383838] shadow-2xl text-white text-xs font-semibold">
+          <span className="text-sm">{toolHud.icon}</span>
+          <span>{toolHud.label}</span>
+          <span className="text-[10px] text-cyan-300 bg-[#2a2a2a] px-1.5 py-0.5 rounded font-mono border border-[#444]">
+            {toolHud.shortcut}
+          </span>
+        </div>
+      )}
+
       <ExcalidrawComponent
         theme="dark"
         zenModeEnabled={zenMode}
+        handleKeyboardGlobally={true}
+        autoFocus={true}
         excalidrawAPI={handleExcalidrawAPI}
         initialData={initialData}
         onChange={handleChange}
