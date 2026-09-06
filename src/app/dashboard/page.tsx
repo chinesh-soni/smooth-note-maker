@@ -15,6 +15,17 @@ import { Spinner } from '@/components/ui/Spinner';
 
 export default function DashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isFocusMode, setIsFocusMode] = useState(false);
+
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen((prev) => {
+      const next = !prev;
+      // Closing sidebar enters full-screen clean note mode (hides overlays)
+      // Opening sidebar brings back toolbars
+      setIsFocusMode(!next);
+      return next;
+    });
+  };
 
   const { showToast } = useToast();
 
@@ -143,7 +154,7 @@ export default function DashboardPage() {
         onSortChange={setSortBy}
         driveFolderId={driveFolderId}
         isOpen={isSidebarOpen}
-        onToggleOpen={() => setIsSidebarOpen(!isSidebarOpen)}
+        onToggleOpen={handleToggleSidebar}
       />
 
       {/* Main Drawing Workspace */}
@@ -152,8 +163,10 @@ export default function DashboardPage() {
           note={activeNote}
           onRename={(title) => activeNote && renameNote(activeNote.id, title)}
           onExportExcalidraw={() => handleExportNote()}
-          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          onToggleSidebar={handleToggleSidebar}
           isSidebarOpen={isSidebarOpen}
+          isFocusMode={isFocusMode}
+          onToggleFocusMode={() => setIsFocusMode(!isFocusMode)}
         />
 
         <div className="flex-1 relative overflow-hidden bg-[#1b1b1b]">
@@ -167,6 +180,7 @@ export default function DashboardPage() {
               key={activeNote.id}
               note={activeNote}
               onChange={handleNoteChange}
+              zenMode={isFocusMode}
             />
           ) : (
             <EmptyState onCreateNote={handleCreateNote} />

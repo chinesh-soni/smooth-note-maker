@@ -6,6 +6,8 @@ import {
   Check,
   X,
   Edit2,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 
 interface EditorHeaderProps {
@@ -14,6 +16,8 @@ interface EditorHeaderProps {
   onExportExcalidraw: () => void;
   onToggleSidebar: () => void;
   isSidebarOpen: boolean;
+  isFocusMode?: boolean;
+  onToggleFocusMode?: () => void;
 }
 
 export const EditorHeader: React.FC<EditorHeaderProps> = ({
@@ -22,6 +26,8 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   onExportExcalidraw,
   onToggleSidebar,
   isSidebarOpen,
+  isFocusMode = false,
+  onToggleFocusMode,
 }) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [titleInput, setTitleInput] = useState(note?.title || '');
@@ -116,17 +122,34 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
         )}
       </div>
 
-      {/* Right: Export */}
-      <div className="flex items-center gap-2.5 flex-shrink-0">
+      {/* Right: Focus Mode & Export */}
+      <div className="flex items-center gap-2 flex-shrink-0">
         {note && (
-          <button
-            onClick={onExportExcalidraw}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-400 bg-[#252525] hover:bg-[#2d2d2d] border border-[#383838] rounded-lg transition-colors"
-            title="Export as .excalidraw file"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export</span>
-          </button>
+          <>
+            {onToggleFocusMode && (
+              <button
+                onClick={onToggleFocusMode}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg border transition-all ${
+                  isFocusMode
+                    ? 'bg-cyan-950/50 text-cyan-300 border-cyan-600/60 shadow-inner'
+                    : 'bg-[#252525] hover:bg-[#2d2d2d] text-slate-300 hover:text-cyan-400 border-[#383838]'
+                }`}
+                title={isFocusMode ? 'Show Tools Overlay (Alt+Z)' : 'Focus Mode - Hide Overlays (Alt+Z)'}
+              >
+                {isFocusMode ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                <span className="hidden sm:inline">{isFocusMode ? 'Show Tools' : 'Hide Tools'}</span>
+              </button>
+            )}
+
+            <button
+              onClick={onExportExcalidraw}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-400 bg-[#252525] hover:bg-[#2d2d2d] border border-[#383838] rounded-lg transition-colors"
+              title="Export as .excalidraw file"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Export</span>
+            </button>
+          </>
         )}
       </div>
     </header>

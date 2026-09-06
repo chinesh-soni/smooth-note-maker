@@ -40,11 +40,13 @@ const UI_OPTIONS = {
 interface ExcalidrawWrapperProps {
   note: Note;
   onChange: (note: Note) => void;
+  zenMode?: boolean;
 }
 
 export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   note,
   onChange,
+  zenMode = false,
 }) => {
   const excalidrawAPIRef = useRef<any>(null);
   const activeNoteIdRef = useRef<string>(note.id);
@@ -157,6 +159,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     <div className="w-full h-full relative excalidraw-container bg-[#121212]">
       <ExcalidrawComponent
         theme="dark"
+        zenModeEnabled={zenMode}
         excalidrawAPI={handleExcalidrawAPI}
         initialData={initialData}
         onChange={handleChange}
