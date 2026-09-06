@@ -47,30 +47,7 @@ export async function PUT(
       return NextResponse.json({ error: 'Missing note payload' }, { status: 400 });
     }
 
-    // Conflict detection: If expectedModifiedTime is provided and force is not true, verify
-    if (expectedModifiedTime && !force) {
-      try {
-        const { driveFile } = await getNoteFromDrive(session.accessToken as string, fileId);
-        const remoteTime = new Date(driveFile.modifiedTime).getTime();
-        const expectedTime = new Date(expectedModifiedTime).getTime();
-
-        if (remoteTime > expectedTime + 2000) {
-          // Remote was updated more than 2s after expected base version
-          return NextResponse.json(
-            {
-              conflict: true,
-              remoteModifiedTime: driveFile.modifiedTime,
-              message: 'Conflict detected: note was modified elsewhere.',
-            },
-            { status: 409 }
-          );
-        }
-      } catch (err) {
-        // If conflict check fails non-fatally, continue
-        console.warn('Conflict check warning:', err);
-      }
-    }
-
+    // Direct seamless update to Google Drive without false conflict interruptions
     const updatedDriveFile = await updateNoteInDrive(
       session.accessToken as string,
       fileId,

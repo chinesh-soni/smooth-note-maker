@@ -60,38 +60,15 @@ export function useAutosave({ onConflict, onDriveFileCreated }: UseAutosaveProps
             }
           }
         } else {
-          // Existing note in Drive, update it
+          // Existing note in Drive, update it directly
           const res = await fetch(`/api/drive/files/${noteToSync.driveFileId}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               note: noteToSync,
-              expectedModifiedTime: noteToSync.remoteModifiedTime,
-              force,
+              force: true,
             }),
           });
-
-          if (res.status === 409) {
-            // Conflict detected
-            const conflictData = await res.json();
-            setSyncStatus('conflict');
-
-            // Fetch latest remote note to show comparison
-            const remoteRes = await fetch(`/api/drive/files/${noteToSync.driveFileId}`);
-            if (remoteRes.ok) {
-              const remoteData = await remoteRes.json();
-              if (onConflict) {
-                onConflict({
-                  noteId: noteToSync.id,
-                  localNote: noteToSync,
-                  remoteNote: remoteData.note,
-                  remoteModifiedTime: conflictData.remoteModifiedTime,
-                  localUpdatedAt: noteToSync.updatedAt,
-                });
-              }
-            }
-            return;
-          }
 
           if (!res.ok) {
             const err = await res.json();

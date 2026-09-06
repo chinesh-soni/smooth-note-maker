@@ -1,24 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Note } from '@/types/note';
-import { SyncStatus } from '@/types/sync';
-import { Button } from '@/components/ui/Button';
 import {
   PanelLeft,
   Download,
-  Save,
   Check,
   X,
   Edit2,
-  FileImage,
-  Share2,
 } from 'lucide-react';
 
 interface EditorHeaderProps {
   note: Note | null;
-  syncStatus: SyncStatus;
-  lastSavedTime: number | null;
-  errorMessage: string | null;
-  onSaveNow: () => void;
   onRename: (newTitle: string) => void;
   onExportExcalidraw: () => void;
   onToggleSidebar: () => void;
@@ -27,10 +18,6 @@ interface EditorHeaderProps {
 
 export const EditorHeader: React.FC<EditorHeaderProps> = ({
   note,
-  syncStatus,
-  lastSavedTime,
-  errorMessage,
-  onSaveNow,
   onRename,
   onExportExcalidraw,
   onToggleSidebar,
@@ -129,30 +116,17 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
         )}
       </div>
 
-      {/* Right: Export & Save Now */}
+      {/* Right: Export */}
       <div className="flex items-center gap-2.5 flex-shrink-0">
         {note && (
-          <>
-            <button
-              onClick={onExportExcalidraw}
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-400 hover:bg-[#252525] rounded-lg transition-colors"
-              title="Export as .excalidraw file"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>Export</span>
-            </button>
-
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={onSaveNow}
-              disabled={syncStatus === 'syncing-drive'}
-              className="text-xs"
-            >
-              <Save className="w-3.5 h-3.5 mr-1" />
-              <span>Save Now</span>
-            </Button>
-          </>
+          <button
+            onClick={onExportExcalidraw}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:text-cyan-400 bg-[#252525] hover:bg-[#2d2d2d] border border-[#383838] rounded-lg transition-colors"
+            title="Export as .excalidraw file"
+          >
+            <Download className="w-3.5 h-3.5" />
+            <span>Export</span>
+          </button>
         )}
       </div>
     </header>

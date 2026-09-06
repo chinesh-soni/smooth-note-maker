@@ -8,16 +8,13 @@ import { NoteSidebar } from '@/components/sidebar/NoteSidebar';
 import { EditorHeader } from '@/components/editor/EditorHeader';
 import { ExcalidrawWrapper } from '@/components/editor/ExcalidrawWrapper';
 import { EmptyState } from '@/components/ui/EmptyState';
-import { ConflictResolutionModal } from '@/components/editor/ConflictResolutionModal';
 import { useToast } from '@/components/ui/Toast';
-import { ConflictInfo } from '@/types/sync';
 import { TemplateType, Note } from '@/types/note';
 import { downloadExcalidrawFile, readExcalidrawFromFile } from '@/lib/excalidraw/export';
 import { Spinner } from '@/components/ui/Spinner';
 
 export default function DashboardPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [conflict, setConflict] = useState<ConflictInfo | null>(null);
 
   const { showToast } = useToast();
 
@@ -57,7 +54,6 @@ export default function DashboardPage() {
     saveNow,
     getCurrentNote,
   } = useAutosave({
-    onConflict: (c) => setConflict(c),
     onDriveFileCreated: handleDriveFileCreated,
   });
 
@@ -121,33 +117,6 @@ export default function DashboardPage() {
     }
   };
 
-  // Conflict Resolution Handlers
-  const handleKeepRemote = async () => {
-    if (!conflict) return;
-    setActiveNote(conflict.remoteNote);
-    await saveNote(conflict.remoteNote);
-    setConflict(null);
-    showToast('Replaced with Google Drive version', 'info');
-  };
-
-  const handleKeepLocal = async () => {
-    if (!conflict) return;
-    await saveNow(conflict.localNote, true); // force=true
-    setConflict(null);
-    showToast('Overwrote Google Drive with current version', 'success');
-  };
-
-  const handleSaveCopy = async () => {
-    if (!conflict) return;
-    const copyNote = await duplicateNote(conflict.noteId);
-    if (copyNote) {
-      setActiveNote(copyNote);
-      await saveNow(copyNote);
-    }
-    setConflict(null);
-    showToast('Saved current version as a separate copy', 'success');
-  };
-
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-[#1b1b1b]">
       {/* OneNote Left Sidebar */}
@@ -181,10 +150,6 @@ export default function DashboardPage() {
       <main className="flex-1 flex flex-col h-full overflow-hidden relative">
         <EditorHeader
           note={activeNote}
-          syncStatus={syncStatus}
-          lastSavedTime={lastSavedTime}
-          errorMessage={errorMessage}
-          onSaveNow={() => activeNote && saveNow(getCurrentNote() || activeNote)}
           onRename={(title) => activeNote && renameNote(activeNote.id, title)}
           onExportExcalidraw={() => handleExportNote()}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -208,15 +173,6 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
-
-      {/* Conflict Resolution Modal */}
-      <ConflictResolutionModal
-        conflict={conflict}
-        onKeepRemote={handleKeepRemote}
-        onKeepLocal={handleKeepLocal}
-        onSaveCopy={handleSaveCopy}
-        onClose={() => setConflict(null)}
-      />
     </div>
   );
 }
