@@ -9,6 +9,7 @@ import {
   setAppState,
 } from '@/lib/db/indexeddb';
 import { createTemplateNote } from '@/lib/excalidraw/templates';
+import { sanitizeDarkStrokesToWhite } from '@/lib/excalidraw/sanitize';
 import { generateId } from '@/lib/utils/id';
 import { enqueueSyncAction } from '@/lib/db/sync-queue';
 
@@ -121,11 +122,13 @@ export function useNotes() {
       if (local && (local.elements?.length > 0 || !local.driveFileId)) {
         const blackboardNote = {
           ...local,
+          elements: sanitizeDarkStrokesToWhite(local.elements || []),
           appState: {
             ...local.appState,
             viewBackgroundColor: '#1b1b1b',
             gridSize: null,
             theme: 'dark',
+            currentItemStrokeColor: '#ffffff',
           },
         };
         setActiveNote(blackboardNote);
@@ -140,11 +143,13 @@ export function useNotes() {
           const data = await res.json();
           const remoteNote = {
             ...data.note,
+            elements: sanitizeDarkStrokesToWhite(data.note.elements || []),
             appState: {
               ...data.note.appState,
               viewBackgroundColor: '#1b1b1b',
               gridSize: null,
               theme: 'dark',
+              currentItemStrokeColor: '#ffffff',
             },
           };
           setActiveNote(remoteNote);
@@ -157,11 +162,13 @@ export function useNotes() {
       if (local) {
         setActiveNote({
           ...local,
+          elements: sanitizeDarkStrokesToWhite(local.elements || []),
           appState: {
             ...local.appState,
             viewBackgroundColor: '#1b1b1b',
             gridSize: null,
             theme: 'dark',
+            currentItemStrokeColor: '#ffffff',
           },
         });
       }

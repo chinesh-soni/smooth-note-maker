@@ -21,20 +21,36 @@ body {
   overflow: hidden;
 }
 
-/* Excalidraw custom container height and dark background */
-.excalidraw-container {
+/* Excalidraw custom container height and OneNote dark background */
+.excalidraw-container,
+.excalidraw-container .excalidraw,
+.excalidraw-container .excalidraw .excalidraw-container {
   height: 100% !important;
   width: 100% !important;
   background-color: #1b1b1b !important;
 }
 
 .excalidraw-container .excalidraw {
-  height: 100% !important;
-  width: 100% !important;
   --color-surface-lowest: #1b1b1b !important;
+  --default-bg-color: #1b1b1b !important;
+  --theme-filter: none !important;
 }
 
+/* 
+  CRITICAL: Excalidraw's default .theme--dark applies `filter: invert(93%) hue-rotate(180deg)`
+  to all canvas elements, which inverts our solid dark (#1b1b1b) OneNote background into light grey (#e4e4e4).
+  We strictly disable this filter so the canvas renders true black (#1b1b1b) with crisp white strokes.
+*/
+.excalidraw.theme--dark,
+.excalidraw-container .excalidraw.theme--dark {
+  --theme-filter: none !important;
+}
+
+.excalidraw.theme--dark canvas,
+.excalidraw-container .excalidraw canvas,
+.excalidraw-container .excalidraw.theme--dark canvas,
 .excalidraw-container canvas {
+  filter: none !important;
   background-color: #1b1b1b !important;
 }
 

@@ -41,14 +41,9 @@ interface ExcalidrawWrapperProps {
   onChange: (note: Note) => void;
 }
 
-// Helper to convert existing black/dark pen strokes to crisp white ink for OneNote dark theme
-const sanitizeDarkStrokesToWhite = (elements: readonly any[]) =>
-  (elements || []).map((el: any) => {
-    if (!el) return el;
-    const stroke = (el.strokeColor || '').toLowerCase();
-    const isDark = !stroke || ['#000000', '#1e1e1e', '#121212', '#181818', '#2d3748', '#333333', '#0f172a'].includes(stroke);
-    return isDark ? { ...el, strokeColor: '#ffffff' } : el;
-  });
+import { sanitizeDarkStrokesToWhite } from '@/lib/excalidraw/sanitize';
+
+// Static UI Options to avoid re-creating on every render
 
 export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   note,
@@ -72,7 +67,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   const handleExcalidrawAPI = useCallback((api: any) => {
     excalidrawAPIRef.current = api;
     // Enforce clean OneNote black background, white pen stroke, and convert existing dark strokes
-    setTimeout(() => {
+    const enforceDark = () => {
       const currentElements = api.getSceneElements() || [];
       const sanitized = sanitizeDarkStrokesToWhite(currentElements);
       api.updateScene({
@@ -85,7 +80,11 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
           currentItemStrokeColor: '#ffffff',
         },
       });
-    }, 50);
+    };
+
+    enforceDark();
+    setTimeout(enforceDark, 50);
+    setTimeout(enforceDark, 150);
   }, []);
 
   // When active note changes from outside (switching notes in library)
