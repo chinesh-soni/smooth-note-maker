@@ -124,7 +124,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
             ? note.appState.viewBackgroundColor
             : '#121212',
         gridSize: note.appState?.gridSize || null,
-        theme: 'dark',
+        theme: 'dark' as const,
         currentItemStrokeColor: '#ffffff',
         zoom: note.appState?.zoom || { value: 1 },
         scrollX: note.appState?.scrollX || 0,
