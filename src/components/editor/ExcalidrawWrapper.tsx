@@ -41,6 +41,15 @@ interface ExcalidrawWrapperProps {
   onChange: (note: Note) => void;
 }
 
+// Helper to convert existing black/dark pen strokes to crisp white ink for OneNote dark theme
+const sanitizeDarkStrokesToWhite = (elements: readonly any[]) =>
+  (elements || []).map((el: any) => {
+    if (!el) return el;
+    const stroke = (el.strokeColor || '').toLowerCase();
+    const isDark = !stroke || ['#000000', '#1e1e1e', '#121212', '#181818', '#2d3748', '#333333', '#0f172a'].includes(stroke);
+    return isDark ? { ...el, strokeColor: '#ffffff' } : el;
+  });
+
 export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   note,
   onChange,
@@ -62,31 +71,37 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   // Stable API setter that doesn't trigger component re-renders
   const handleExcalidrawAPI = useCallback((api: any) => {
     excalidrawAPIRef.current = api;
-    // Enforce clean black background and remove any grid lines (OneNote dark mode)
+    // Enforce clean OneNote black background, white pen stroke, and convert existing dark strokes
     setTimeout(() => {
+      const currentElements = api.getSceneElements() || [];
+      const sanitized = sanitizeDarkStrokesToWhite(currentElements);
       api.updateScene({
+        elements: sanitized,
         appState: {
+          ...api.getAppState(),
           viewBackgroundColor: '#1b1b1b',
           gridSize: null,
           theme: 'dark',
+          currentItemStrokeColor: '#ffffff',
         },
       });
-    }, 100);
+    }, 50);
   }, []);
 
   // When active note changes from outside (switching notes in library)
   useEffect(() => {
     if (activeNoteIdRef.current !== note.id && excalidrawAPIRef.current) {
       activeNoteIdRef.current = note.id;
-      isInternalChangeRef.current = true;
 
+      const sanitized = sanitizeDarkStrokesToWhite(note.elements || []);
       excalidrawAPIRef.current.updateScene({
-        elements: note.elements || [],
+        elements: sanitized,
         appState: {
           ...note.appState,
           viewBackgroundColor: '#1b1b1b',
           gridSize: null,
           theme: 'dark',
+          currentItemStrokeColor: '#ffffff',
           collaborators: undefined,
         },
       });
@@ -94,17 +109,12 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
       if (note.files) {
         excalidrawAPIRef.current.addFiles(Object.values(note.files));
       }
-
-      setTimeout(() => {
-        isInternalChangeRef.current = false;
-      }, 100);
     }
   }, [note.id]);
 
   // Stable change handler with 0 dependencies so Excalidraw never sees a changing prop
   const handleChange = useCallback(
     (elements: readonly any[], appState: Record<string, any>, files: Record<string, any>) => {
-      if (isInternalChangeRef.current) return;
       const current = noteRef.current;
 
       const updatedNote: Note = {
@@ -114,6 +124,7 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
           viewBackgroundColor: '#1b1b1b',
           gridSize: null,
           theme: 'dark',
+          currentItemStrokeColor: appState.currentItemStrokeColor || '#ffffff',
           zoom: appState.zoom,
           scrollX: appState.scrollX,
           scrollY: appState.scrollY,
@@ -127,10 +138,10 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     []
   );
 
-  // Memoize initialData per note ID (Blackboard theme default)
+  // Memoize initialData per note ID (OneNote black theme default with white strokes)
   const initialData = React.useMemo(
     () => ({
-      elements: note.elements || [],
+      elements: sanitizeDarkStrokesToWhite(note.elements || []),
       appState: {
         viewBackgroundColor: '#1b1b1b',
         gridSize: null,

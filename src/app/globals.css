@@ -21,15 +21,21 @@ body {
   overflow: hidden;
 }
 
-/* Excalidraw custom container height */
+/* Excalidraw custom container height and dark background */
 .excalidraw-container {
   height: 100% !important;
   width: 100% !important;
+  background-color: #1b1b1b !important;
 }
 
 .excalidraw-container .excalidraw {
   height: 100% !important;
   width: 100% !important;
+  --color-surface-lowest: #1b1b1b !important;
+}
+
+.excalidraw-container canvas {
+  background-color: #1b1b1b !important;
 }
 
 /* Animation keyframes */

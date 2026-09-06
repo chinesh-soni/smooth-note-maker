@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Note } from '@/types/note';
 import { SyncStatus } from '@/types/sync';
-import { SyncBadge } from '@/components/ui/SyncBadge';
 import { Button } from '@/components/ui/Button';
 import {
   PanelLeft,
@@ -130,17 +129,8 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
         )}
       </div>
 
-      {/* Right: Sync Status & Action Buttons */}
+      {/* Right: Export & Save Now */}
       <div className="flex items-center gap-2.5 flex-shrink-0">
-        {note && (
-          <SyncBadge
-            status={syncStatus}
-            lastSavedTime={lastSavedTime}
-            errorMessage={errorMessage}
-            onRetry={onSaveNow}
-          />
-        )}
-
         {note && (
           <>
             <button
