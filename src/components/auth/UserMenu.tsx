@@ -23,6 +23,15 @@ export const UserMenu: React.FC<{ driveFolderId?: string | null }> = ({ driveFol
   if (!session?.user) return null;
 
   const user = session.user;
+  const displayName = user.name || (user.email ? user.email.split('@')[0] : 'Note Creator');
+  const initials = displayName
+    .split(' ')
+    .filter(Boolean)
+    .map((n) => n[0])
+    .join('')
+    .substring(0, 2)
+    .toUpperCase() || 'U';
+
   const folderLink = driveFolderId
     ? `https://drive.google.com/drive/folders/${driveFolderId}`
     : 'https://drive.google.com';
@@ -38,19 +47,20 @@ export const UserMenu: React.FC<{ driveFolderId?: string | null }> = ({ driveFol
         {user.image ? (
           <img
             src={user.image}
-            alt={user.name || 'User Avatar'}
-            className="w-8 h-8 rounded-full border border-slate-200 dark:border-slate-700 object-cover"
+            alt={displayName}
+            referrerPolicy="no-referrer"
+            className="w-8 h-8 rounded-full border border-slate-300 dark:border-slate-700 object-cover shadow-sm"
           />
         ) : (
-          <div className="w-8 h-8 rounded-full bg-purple-700 text-white flex items-center justify-center font-bold text-xs">
-            {user.name ? user.name[0].toUpperCase() : 'U'}
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-700 to-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-sm">
+            {initials}
           </div>
         )}
         <div className="hidden sm:block text-left text-xs">
-          <div className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[120px]">
-            {user.name || 'Google User'}
+          <div className="font-semibold text-slate-800 dark:text-slate-200 truncate max-w-[130px]">
+            {displayName}
           </div>
-          <div className="text-slate-500 dark:text-slate-400 truncate max-w-[120px]">
+          <div className="text-slate-500 dark:text-slate-400 truncate max-w-[130px]">
             {user.email}
           </div>
         </div>

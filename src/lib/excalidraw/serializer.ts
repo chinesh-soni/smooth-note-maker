@@ -14,9 +14,9 @@ export function serializeNoteToExcalidrawJson(note: Note): string {
     source: APP_SOURCE,
     elements: note.elements || [],
     appState: {
-      viewBackgroundColor: note.appState?.viewBackgroundColor || '#ffffff',
+      viewBackgroundColor: note.appState?.viewBackgroundColor || '#121212',
       gridSize: note.appState?.gridSize || null,
-      theme: note.appState?.theme || 'light',
+      theme: note.appState?.theme || 'dark',
       zoom: note.appState?.zoom || { value: 1 },
       scrollX: note.appState?.scrollX || 0,
       scrollY: note.appState?.scrollY || 0,

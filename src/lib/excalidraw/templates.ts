@@ -10,32 +10,36 @@ export function createTemplateNote(type: TemplateType, title?: string): Partial<
 
   let elements: any[] = [];
   let appState: Record<string, any> = {
-    viewBackgroundColor: '#ffffff',
-    theme: 'light',
+    viewBackgroundColor: '#121212',
+    theme: 'dark',
+    currentItemStrokeColor: '#ffffff',
   };
 
   switch (type) {
     case 'lined':
-      appState.viewBackgroundColor = '#fdfbf7'; // warm paper tone
+      appState.viewBackgroundColor = '#121212';
       elements = createLinedPaperElements();
       break;
 
     case 'grid':
-      appState.viewBackgroundColor = '#f8fafc';
+      appState.viewBackgroundColor = '#121212';
       appState.gridSize = 20;
       elements = createGridElements();
       break;
 
     case 'meeting':
+      appState.viewBackgroundColor = '#121212';
       elements = createMeetingNotesElements();
       break;
 
     case 'brainstorm':
+      appState.viewBackgroundColor = '#121212';
       elements = createBrainstormElements();
       break;
 
     case 'blank':
     default:
+      appState.viewBackgroundColor = '#121212';
       elements = [];
       break;
   }
@@ -94,13 +98,13 @@ function createLinedPaperElements(): any[] {
       width: 800,
       height: 0,
       points: [[0, 0], [800, 0]],
-      strokeColor: '#93c5fd', // light blue ruled lines
+      strokeColor: '#334155', // chalk slate ruled lines
       backgroundColor: 'transparent',
       fillStyle: 'hachure',
       strokeWidth: 1,
       strokeStyle: 'solid',
       roughness: 0,
-      opacity: 50,
+      opacity: 70,
       groupIds: ['paper_lines'],
       locked: true,
     });
@@ -124,7 +128,7 @@ function createGridElements(): any[] {
       fontFamily: 1,
       textAlign: 'left',
       verticalAlign: 'top',
-      strokeColor: '#1e293b',
+      strokeColor: '#f8fafc',
       backgroundColor: 'transparent',
       roughness: 0,
       opacity: 100,
@@ -152,7 +156,7 @@ function createMeetingNotesElements(): any[] {
       text: `📝 Meeting Notes - ${nowStr}`,
       fontSize: 24,
       fontFamily: 1,
-      strokeColor: '#6220b3', // OneNote purple
+      strokeColor: '#f8fafc', // bright chalk title
       locked: false,
     },
     {
@@ -162,8 +166,8 @@ function createMeetingNotesElements(): any[] {
       y: 100,
       width: 380,
       height: 220,
-      strokeColor: '#6220b3',
-      backgroundColor: '#f5f3ff',
+      strokeColor: '#8b5cf6',
+      backgroundColor: '#1e1b4b',
       fillStyle: 'solid',
       strokeWidth: 2,
       roughness: 1,
@@ -180,7 +184,7 @@ function createMeetingNotesElements(): any[] {
       text: '📌 Agenda & Discussion\n\n• Topic 1:\n• Topic 2:\n• Key Takeaways:',
       fontSize: 16,
       fontFamily: 1,
-      strokeColor: '#1e293b',
+      strokeColor: '#f8fafc',
       locked: false,
     },
     {
@@ -190,8 +194,8 @@ function createMeetingNotesElements(): any[] {
       y: 100,
       width: 380,
       height: 220,
-      strokeColor: '#059669',
-      backgroundColor: '#ecfdf5',
+      strokeColor: '#10b981',
+      backgroundColor: '#022c22',
       fillStyle: 'solid',
       strokeWidth: 2,
       roughness: 1,
@@ -208,7 +212,7 @@ function createMeetingNotesElements(): any[] {
       text: '✅ Action Items\n\n[ ] Task 1 (Assignee)\n[ ] Task 2 (Assignee)\n[ ] Next sync date:',
       fontSize: 16,
       fontFamily: 1,
-      strokeColor: '#064e3b',
+      strokeColor: '#f8fafc',
       locked: false,
     },
   ];
@@ -223,8 +227,8 @@ function createBrainstormElements(): any[] {
       y: 200,
       width: 200,
       height: 120,
-      strokeColor: '#6220b3',
-      backgroundColor: '#f5f3ff',
+      strokeColor: '#a855f7',
+      backgroundColor: '#2e1065',
       fillStyle: 'solid',
       strokeWidth: 2,
       roughness: 1,
@@ -240,7 +244,7 @@ function createBrainstormElements(): any[] {
       text: '💡 Central Idea',
       fontSize: 20,
       fontFamily: 1,
-      strokeColor: '#6220b3',
+      strokeColor: '#f8fafc',
       locked: false,
     },
   ];

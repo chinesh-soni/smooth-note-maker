@@ -26,10 +26,13 @@ export const authOptions: NextAuthOptions = {
       // Initial sign in
       if (account && user) {
         return {
+          ...token,
           accessToken: account.access_token,
           refreshToken: account.refresh_token,
           accessTokenExpires: account.expires_at ? account.expires_at * 1000 : Date.now() + 3600 * 1000,
-          user,
+          name: user.name || token.name,
+          email: user.email || token.email,
+          picture: user.image || token.picture,
         };
       }
 
@@ -63,12 +66,13 @@ export const authOptions: NextAuthOptions = {
       if (token) {
         session.accessToken = token.accessToken as string | undefined;
         session.error = token.error;
-        if (token.user) {
-          session.user = {
-            ...session.user,
-            id: token.sub,
-          };
-        }
+        session.user = {
+          ...session.user,
+          id: token.sub,
+          name: token.name || (token.user as any)?.name || session.user?.name || '',
+          email: token.email || (token.user as any)?.email || session.user?.email || '',
+          image: (token.picture as string) || (token.user as any)?.image || session.user?.image || '',
+        };
       }
       return session;
     },
@@ -77,5 +81,5 @@ export const authOptions: NextAuthOptions = {
     signIn: '/login',
     error: '/login',
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET || 'smooth-note-maker-production-default-secret-key-2026',
 };

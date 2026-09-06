@@ -191,11 +191,11 @@ export default function DashboardPage() {
           isSidebarOpen={isSidebarOpen}
         />
 
-        <div className="flex-1 relative overflow-hidden bg-white dark:bg-slate-900">
+        <div className="flex-1 relative overflow-hidden bg-[#121212]">
           {isLoadingNote ? (
-            <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex flex-col items-center justify-center h-full bg-[#121212]">
               <Spinner size="lg" />
-              <p className="mt-3 text-xs text-slate-500 font-medium">Opening note...</p>
+              <p className="mt-3 text-xs text-slate-400 font-medium">Opening blackboard note...</p>
             </div>
           ) : activeNote ? (
             <ExcalidrawWrapper

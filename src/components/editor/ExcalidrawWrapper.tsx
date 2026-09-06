@@ -98,9 +98,9 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
         ...current,
         elements,
         appState: {
-          viewBackgroundColor: appState.viewBackgroundColor,
+          viewBackgroundColor: appState.viewBackgroundColor || '#121212',
           gridSize: appState.gridSize,
-          theme: appState.theme,
+          theme: 'dark',
           zoom: appState.zoom,
           scrollX: appState.scrollX,
           scrollY: appState.scrollY,
@@ -114,14 +114,18 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
     []
   );
 
-  // Memoize initialData per note ID
+  // Memoize initialData per note ID (Blackboard theme default)
   const initialData = React.useMemo(
     () => ({
       elements: note.elements || [],
       appState: {
-        viewBackgroundColor: note.appState?.viewBackgroundColor || '#ffffff',
+        viewBackgroundColor:
+          note.appState?.viewBackgroundColor && note.appState.viewBackgroundColor !== '#ffffff'
+            ? note.appState.viewBackgroundColor
+            : '#121212',
         gridSize: note.appState?.gridSize || null,
-        theme: note.appState?.theme || 'light',
+        theme: 'dark',
+        currentItemStrokeColor: '#ffffff',
         zoom: note.appState?.zoom || { value: 1 },
         scrollX: note.appState?.scrollX || 0,
         scrollY: note.appState?.scrollY || 0,
@@ -133,8 +137,9 @@ export const ExcalidrawWrapper: React.FC<ExcalidrawWrapperProps> = ({
   );
 
   return (
-    <div className="w-full h-full relative excalidraw-container">
+    <div className="w-full h-full relative excalidraw-container bg-[#121212]">
       <ExcalidrawComponent
+        theme="dark"
         excalidrawAPI={handleExcalidrawAPI}
         initialData={initialData}
         onChange={handleChange}

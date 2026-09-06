@@ -73,34 +73,47 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
   };
 
   return (
-    <aside
-      className={`fixed inset-y-0 left-0 z-30 w-72 sm:w-80 bg-slate-50/95 dark:bg-slate-950/95 border-r border-slate-200 dark:border-slate-800 flex flex-col transition-transform duration-300 ease-in-out sm:static sm:translate-x-0 ${
-        isOpen ? 'translate-x-0 shadow-2xl sm:shadow-none' : '-translate-x-full'
-      }`}
-    >
-      {/* Top Header: App Branding */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-200/80 dark:border-slate-800/80">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white shadow-sm">
-            <BookOpen className="w-4 h-4" />
-          </div>
-          <div>
-            <h1 className="text-sm font-bold text-slate-900 dark:text-white leading-none">
-              Smooth Note Maker
-            </h1>
-            <span className="text-[10px] text-purple-600 dark:text-purple-400 font-medium">
-              OneNote Edition
-            </span>
-          </div>
-        </div>
-
-        <button
+    <>
+      {/* Mobile Backdrop Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 sm:hidden animate-fade-in"
           onClick={onToggleOpen}
-          className="sm:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200 dark:hover:bg-slate-800"
-        >
-          <PanelLeftClose className="w-5 h-5" />
-        </button>
-      </div>
+          aria-hidden="true"
+        />
+      )}
+
+      <aside
+        className={`fixed sm:static inset-y-0 left-0 z-50 sm:z-20 h-full flex flex-col bg-slate-950 border-r border-slate-800 text-slate-100 transition-all duration-300 ease-in-out ${
+          isOpen
+            ? 'w-72 sm:w-80 translate-x-0 opacity-100 shadow-2xl sm:shadow-none'
+            : '-translate-x-full sm:translate-x-0 sm:w-0 sm:border-r-0 sm:opacity-0 pointer-events-none overflow-hidden'
+        }`}
+      >
+        {/* Top Header: App Branding */}
+        <div className="flex items-center justify-between p-4 border-b border-slate-800/80 flex-shrink-0">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-700 to-indigo-600 flex items-center justify-center text-white shadow-sm flex-shrink-0">
+              <BookOpen className="w-4 h-4" />
+            </div>
+            <div className="truncate">
+              <h1 className="text-sm font-bold text-white leading-none truncate">
+                Smooth Note Maker
+              </h1>
+              <span className="text-[10px] text-purple-400 font-medium">
+                OneNote Edition
+              </span>
+            </div>
+          </div>
+
+          <button
+            onClick={onToggleOpen}
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-slate-800 transition-colors flex-shrink-0"
+            title="Collapse sidebar"
+          >
+            <PanelLeftClose className="w-4 h-4" />
+          </button>
+        </div>
 
       {/* Action Bar: New Note & Templates */}
       <div className="p-3 border-b border-slate-200/60 dark:border-slate-800/60 space-y-2.5">
@@ -237,9 +250,10 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
       </div>
 
       {/* Bottom User Profile & Drive Info */}
-      <div className="p-3 border-t border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-900/50 flex items-center justify-between">
+      <div className="p-3 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between">
         <UserMenu driveFolderId={driveFolderId} />
       </div>
     </aside>
+  </>
   );
 };

@@ -119,7 +119,18 @@ export function useNotes() {
       // 1. Try local IndexedDB
       const local = await loadNoteLocally(id);
       if (local && (local.elements?.length > 0 || !local.driveFileId)) {
-        setActiveNote(local);
+        const blackboardNote = {
+          ...local,
+          appState: {
+            ...local.appState,
+            viewBackgroundColor:
+              local.appState?.viewBackgroundColor && local.appState.viewBackgroundColor !== '#ffffff'
+                ? local.appState.viewBackgroundColor
+                : '#121212',
+            theme: 'dark',
+          },
+        };
+        setActiveNote(blackboardNote);
         setIsLoadingNote(false);
         return;
       }
@@ -129,7 +140,17 @@ export function useNotes() {
         const res = await fetch(`/api/drive/files/${local.driveFileId}`);
         if (res.ok) {
           const data = await res.json();
-          const remoteNote = data.note;
+          const remoteNote = {
+            ...data.note,
+            appState: {
+              ...data.note.appState,
+              viewBackgroundColor:
+                data.note.appState?.viewBackgroundColor && data.note.appState.viewBackgroundColor !== '#ffffff'
+                  ? data.note.appState.viewBackgroundColor
+                  : '#121212',
+              theme: 'dark',
+            },
+          };
           setActiveNote(remoteNote);
           await saveNoteLocally(remoteNote);
           setIsLoadingNote(false);
@@ -138,7 +159,14 @@ export function useNotes() {
       }
 
       if (local) {
-        setActiveNote(local);
+        setActiveNote({
+          ...local,
+          appState: {
+            ...local.appState,
+            viewBackgroundColor: '#121212',
+            theme: 'dark',
+          },
+        });
       }
     } catch (err: any) {
       console.error('Failed to load active note:', err);

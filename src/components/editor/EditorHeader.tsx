@@ -63,15 +63,20 @@ export const EditorHeader: React.FC<EditorHeaderProps> = ({
   };
 
   return (
-    <header className="h-14 border-b border-slate-200 dark:border-slate-800 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md px-4 flex items-center justify-between gap-4 select-none z-20">
+    <header className="h-14 border-b border-slate-800 bg-slate-950/95 backdrop-blur-md px-4 flex items-center justify-between gap-4 select-none z-20">
       {/* Left: Sidebar Toggle & Note Title */}
       <div className="flex items-center gap-3 min-w-0">
         <button
           onClick={onToggleSidebar}
-          className="p-1.5 rounded-lg text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          title={isSidebarOpen ? 'Hide Sidebar' : 'Show Sidebar'}
+          className={`p-2 rounded-lg transition-all flex items-center gap-1.5 text-xs font-semibold ${
+            isSidebarOpen
+              ? 'bg-purple-900/40 text-purple-300 border border-purple-700/60'
+              : 'bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 shadow-sm'
+          }`}
+          title={isSidebarOpen ? 'Hide Notebooks Sidebar' : 'Show Notebooks Sidebar'}
         >
-          <PanelLeft className="w-5 h-5" />
+          <PanelLeft className="w-4 h-4" />
+          <span className="hidden sm:inline">Notebooks</span>
         </button>
 
         {note ? (
