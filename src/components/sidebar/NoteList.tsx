@@ -36,7 +36,7 @@ export const NoteList: React.FC<NoteListProps> = ({
 
   return (
     <>
-      <div className="flex flex-col gap-1.5 overflow-y-auto pr-1">
+      <div className="flex flex-col gap-2">
         {notes.map((note) => (
           <NoteItem
             key={note.id}

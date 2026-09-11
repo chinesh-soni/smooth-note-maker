@@ -34,10 +34,12 @@ export const NoteItem: React.FC<NoteItemProps> = ({
   onExport,
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [openUpwards, setOpenUpwards] = useState(false);
   const [isRenaming, setIsRenaming] = useState(false);
   const [titleInput, setTitleInput] = useState(note.title);
 
   const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -63,6 +65,16 @@ export const NoteItem: React.FC<NoteItemProps> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMenuOpen]);
 
+  const handleToggleMenu = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isMenuOpen && buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      setOpenUpwards(spaceBelow < 185);
+    }
+    setIsMenuOpen((prev) => !prev);
+  };
+
   const handleSaveRename = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (titleInput.trim()) {
@@ -83,7 +95,8 @@ export const NoteItem: React.FC<NoteItemProps> = ({
         'group relative flex items-start justify-between p-3 rounded-xl cursor-pointer transition-all border text-left select-none',
         isActive
           ? 'bg-[#2d2d2d] border-cyan-500/80 shadow-sm'
-          : 'bg-[#252525]/80 border-[#333333] hover:bg-[#2a2a2a] hover:border-[#404040]'
+          : 'bg-[#252525]/80 border-[#333333] hover:bg-[#2a2a2a] hover:border-[#404040]',
+        isMenuOpen ? 'z-30' : 'z-0'
       )}
     >
       {/* Active Indicator Bar (OneNote style left edge) */}
@@ -152,7 +165,8 @@ export const NoteItem: React.FC<NoteItemProps> = ({
       {!isRenaming && (
         <div className="relative flex-shrink-0" ref={menuRef} onClick={(e) => e.stopPropagation()}>
           <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            ref={buttonRef}
+            onClick={handleToggleMenu}
             className={clsx(
               'p-1 rounded-md text-slate-400 hover:text-slate-200 hover:bg-[#2d2d2d] transition-opacity',
               isMenuOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100 focus:opacity-100'
@@ -163,15 +177,20 @@ export const NoteItem: React.FC<NoteItemProps> = ({
           </button>
 
           {isMenuOpen && (
-            <div className="absolute right-0 top-full mt-1 w-36 bg-[#252525] rounded-lg shadow-xl border border-[#333333] py-1 z-40 animate-fade-in text-xs">
+            <div
+              className={clsx(
+                "absolute right-0 w-36 bg-[#252525] rounded-xl shadow-2xl border border-[#3d3d3d] py-1.5 z-50 animate-fade-in text-xs",
+                openUpwards ? "bottom-full mb-1.5" : "top-full mt-1.5"
+              )}
+            >
               <button
                 onClick={() => {
                   setIsMenuOpen(false);
                   setIsRenaming(true);
                 }}
-                className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-left"
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#333333] hover:text-white text-left transition-colors"
               >
-                <Edit2 className="w-3.5 h-3.5" />
+                <Edit2 className="w-3.5 h-3.5 text-slate-400" />
                 <span>Rename</span>
               </button>
               <button
@@ -179,9 +198,9 @@ export const NoteItem: React.FC<NoteItemProps> = ({
                   setIsMenuOpen(false);
                   onDuplicate();
                 }}
-                className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-left"
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#333333] hover:text-white text-left transition-colors"
               >
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-3.5 h-3.5 text-slate-400" />
                 <span>Duplicate</span>
               </button>
               <button
@@ -189,18 +208,18 @@ export const NoteItem: React.FC<NoteItemProps> = ({
                   setIsMenuOpen(false);
                   onExport();
                 }}
-                className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-left"
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-slate-200 hover:bg-[#333333] hover:text-white text-left transition-colors"
               >
-                <Download className="w-3.5 h-3.5" />
+                <Download className="w-3.5 h-3.5 text-slate-400" />
                 <span>Export file</span>
               </button>
-              <div className="border-t border-slate-100 dark:border-slate-800 my-1" />
+              <div className="border-t border-[#333333] my-1" />
               <button
                 onClick={() => {
                   setIsMenuOpen(false);
                   onDelete();
                 }}
-                className="w-full flex items-center gap-2 px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-left"
+                className="w-full flex items-center gap-2 px-3 py-1.5 text-rose-400 hover:bg-rose-950/40 hover:text-rose-300 text-left transition-colors"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Delete</span>

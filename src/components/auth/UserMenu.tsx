@@ -67,7 +67,7 @@ export const UserMenu: React.FC<{ driveFolderId?: string | null }> = ({ driveFol
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 bottom-full sm:bottom-auto sm:top-full mt-2 w-64 bg-[#252525] rounded-xl shadow-2xl border border-[#333333] py-2 z-50 animate-fade-in">
+        <div className="absolute right-0 bottom-full mb-2 w-64 bg-[#252525] rounded-xl shadow-2xl border border-[#333333] py-2 z-50 animate-fade-in">
           <div className="px-4 py-3 border-b border-[#333333]">
             <p className="text-sm font-semibold text-white truncate">
               {displayName}

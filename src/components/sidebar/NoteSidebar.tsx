@@ -205,7 +205,7 @@ export const NoteSidebar: React.FC<NoteSidebarProps> = ({
       </div>
 
       {/* Note List Scroll Area */}
-      <div className="flex-1 overflow-y-auto p-3">
+      <div className="flex-1 overflow-y-auto p-3 pb-32">
         <div className="flex items-center justify-between mb-2 px-1">
           <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
             Notes ({notes.length})
